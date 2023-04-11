@@ -28,7 +28,7 @@ ivv-itc@lists.nasa.gov
 /* 
 ** CAM telemetry message IDs
 */
-#define CAM_HK_TLM_MID      0x0BC8      
-#define CAM_EXP_TLM_MID	    0x0BC9
+#define CAM_HK_TLM_MID      0x08C8      
+#define CAM_EXP_TLM_MID	    0x08C9
 
 #endif
