@@ -30,14 +30,6 @@ ivv-itc@lists.nasa.gov
 */
 CAM_AppData_t CAM_AppData;
 
-static CFE_EVS_BinFilter_t  CAM_EventFilters[] =
-       {  /* Event ID    mask */
-          {CAM_STARTUP_INF_EID,       0x0000},
-          {CAM_COMMAND_ERR_EID,       0x0000},
-          {CAM_COMMANDNOP_INF_EID,    0x0000},
-          {CAM_COMMANDRST_INF_EID,    0x0000},
-       };
-
 /*
 ** arducam_AppMain() -- Application entry point and main process loop
 */
@@ -127,9 +119,7 @@ int32 CAM_AppInit(void)
         /*
         ** Register the events
         */ 
-        status = CFE_EVS_Register(CAM_EventFilters,
-                                  sizeof(CAM_EventFilters)/sizeof(CFE_EVS_BinFilter_t),
-                                  CFE_EVS_BINARY_FILTER);
+        status = CFE_EVS_Register(NULL, 0, CFE_EVS_BINARY_FILTER);
         if (status != CFE_SUCCESS)
         {
             OS_printf("CAM APP: EVS register error %d", status);
