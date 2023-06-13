@@ -40,7 +40,8 @@ namespace Nos3
         //    "configuration:\n%s", oss.str().c_str());
 
         // Time node
-        std::string connection_string = config.get("common.nos-connection-string", "tcp://127.0.0.1:12001");
+        std::string connection_string = config.get("common.nos-connection-string", "tcp://nos_engine_server:12001");
+//        std::string connection_string = config.get("common.nos-connection-string", "tcp://255.255.255.0:12001");
 
         std::string time_bus_name = "command";        
         if (config.get_child_optional("hardware-model.connections")) 
