@@ -66,18 +66,6 @@ ivv-itc@lists.nasa.gov
 #define CAM_HWLIB_READ_CC           31
 #define CAM_PUBLISH_CC              32
 
-/* Manager Application CC */
-#define CAM_MGR_EOE_1_SUCCESS_CC    50
-#define CAM_MGR_EOE_1_FAILURE_CC    51
-#define CAM_MGR_EOE_2_SUCCESS_CC    52
-#define CAM_MGR_EOE_2_FAILURE_CC    53
-#define CAM_MGR_EOE_3_SUCCESS_CC    54
-#define CAM_MGR_EOE_3_FAILURE_CC    55
-
-/* PR Application CC */
-#define CAM_PR_PAUSE_CC             0
-#define CAM_PR_RESUME_CC            1
-
 /*
 ** CAM no argument command
 ** See also: #CAM_NOOP_CC, #CAM_RESET_COUNTER_CC, #CAM_STOP_CC, 
@@ -86,11 +74,10 @@ ivv-itc@lists.nasa.gov
 */
 typedef struct
 {
-   uint8        CmdHeader[CFE_SB_CMD_HDR_SIZE];
+   CFE_MSG_CommandHeader_t CmdHeader;
 
 } CAM_NoArgsCmd_t;
 #define CAM_NOARGSCMD_LNGTH sizeof (CAM_NoArgsCmd_t)
-
 
 /*
 ** Type definition (CAM housekeeping)
@@ -99,13 +86,9 @@ typedef struct
 */
 typedef struct 
 {
-    uint8       TlmHeader[CFE_SB_TLM_HDR_SIZE];
+    CFE_MSG_TelemetryHeader_t TlmHeader;
     uint8       CommandErrorCount;
     uint8       CommandCount;
-  
-    /*
-    ** todo - add app specific telemetry values to this struct
-    */
 
 } CAM_Hk_tlm_t;
 #define CAM_HK_TLM_LNGTH  sizeof ( CAM_Hk_tlm_t )
@@ -117,7 +100,7 @@ typedef struct
 */
 typedef struct 
 {
-    uint8       TlmHeader[CFE_SB_TLM_HDR_SIZE];
+    CFE_MSG_TelemetryHeader_t TlmHeader;
     uint8		data[CAM_DATA_SIZE];
     uint32		msg_count;
     uint32      length;
