@@ -5,6 +5,7 @@ TELEMETRY ARDUCAM ARDUCAM_EXP_TLM_T LITTLE_ENDIAN "Arducam Experiment Telemetry"
   APPEND_ITEM    CCSDS_LENGTH         16 UINT "CCSDS Packet Data Length" BIG_ENDIAN
   APPEND_ITEM    CCSDS_SECONDS        32 UINT "CCSDS Telemetry Secondary Header (seconds)" BIG_ENDIAN
   APPEND_ITEM    CCSDS_SUBSECS        16 UINT "CCSDS Telemetry Secondary Header (subseconds)" BIG_ENDIAN
+  APPEND_ITEM    CCSDS_SPARE          32 UINT  ""
   APPEND_ITEM    CAM_DATA             8080 BLOCK "CAM Data"
   APPEND_ITEM    PADDING              16 UINT  ""
   APPEND_ITEM    MSG_COUNT            32 UINT "CAM Experiment Message Count"
@@ -17,5 +18,6 @@ TELEMETRY ARDUCAM ARDUCAM_HK_TLM_T LITTLE_ENDIAN "Arducam CAM_Hk_tlm_t"
   APPEND_ITEM    CCSDS_LENGTH         16 UINT "CCSDS Packet Data Length" BIG_ENDIAN
   APPEND_ITEM    CCSDS_SECONDS        32 UINT "CCSDS Telemetry Secondary Header (seconds)" BIG_ENDIAN
   APPEND_ITEM    CCSDS_SUBSECS        16 UINT "CCSDS Telemetry Secondary Header (subseconds)" BIG_ENDIAN
+  APPEND_ITEM    CCSDS_SPARE          32 UINT  ""
   APPEND_ITEM    COMMANDERRORCOUNT    8 UINT "CommandErrorCount"
   APPEND_ITEM    COMMANDCOUNT         8 UINT "CommandCount"
