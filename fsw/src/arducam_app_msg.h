@@ -14,6 +14,7 @@
 
 #include "osapi.h" // for types used below
 #include "cfe_sb.h" // for CFE_SB_CMD_HDR_SIZE, CFE_SB_TLM_HDR_SIZE
+#include "cam_lib.h" // for other stuff like CAM_DATA_SIZE
 
 
 /*
@@ -158,7 +159,7 @@ typedef struct
 typedef struct 
 {
     uint8       TlmHeader[CFE_SB_TLM_HDR_SIZE];
-    uint8		data[ARDUCAM_DATA_SIZE];
+    uint8		data[CAM_DATA_SIZE];
     uint32		msg_count;
     uint32      length;
     

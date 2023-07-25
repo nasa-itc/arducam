@@ -24,8 +24,8 @@
 /*
 ** Added CAM message IDs
 */
-#define CAM_EOE_MID                   0x18C9
-#define CAM_EXP_TLM_MID               0x0BC9
+#define ARDUCAM_EOE_MID               0x18C9
+#define ARDUCAM_EXP_TLM_MID           0x0BC9
 
 #endif /* _arducam_app_msgids_h_ */
 
