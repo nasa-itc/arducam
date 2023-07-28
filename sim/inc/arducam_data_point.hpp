@@ -14,6 +14,9 @@ namespace Nos3
         // Constructor
         ArducamDataPoint(int16_t spacecraft, const boost::shared_ptr<Sim42DataPoint> dp);
 
+        // Destructor
+        ~ArducamDataPoint(void);
+
         // Accessors
         std::string to_string(void) const;
         // vvv These provide the hardware model a way to get the specific data out of the data point that it will need to send
