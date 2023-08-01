@@ -38,7 +38,6 @@ ivv-itc@lists.nasa.gov
 int32 CAM_ChildInit(void);
 void  CAM_ChildTask(void);
 int32 CAM_publish(void);
-int32 CAM_eoe_publish(int32);
 int32 CAM_state(void);
 int32 CAM_fifo(uint16*, uint8*);
 int32 CAM_exp(void); 

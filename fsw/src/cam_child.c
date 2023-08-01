@@ -35,13 +35,13 @@ int32 CAM_ChildInit(void)
     /* Create child task (low priority command handler) */
     result = CFE_ES_CreateChildTask(&CAM_AppData.ChildTaskID,
                                     CAM_CHILD_TASK_NAME,
-                                    (void *) CAM_ChildTask, 0,
+                                    CAM_ChildTask, 0,
                                     CAM_CHILD_TASK_STACK_SIZE,
                                     CAM_CHILD_TASK_PRIORITY, 0);
     
     if (result != CFE_SUCCESS)
     {
-        CFE_EVS_SendEvent(CAM_CHILD_INIT_ERR_EID, CFE_EVS_ERROR,
+        CFE_EVS_SendEvent(CAM_CHILD_INIT_ERR_EID, CFE_EVS_EventType_ERROR,
            "CAM child task initialization error: create task failed: result = %d", result);
     }
     
@@ -59,71 +59,11 @@ int32 CAM_publish(void)
 {
     OS_MutSemTake(CAM_AppData.data_mutex);
         CAM_AppData.Exp_Pkt.msg_count++;
-        CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &CAM_AppData.Exp_Pkt);
-        CFE_SB_SendMsg((CFE_SB_Msg_t *) &CAM_AppData.Exp_Pkt);
+        CFE_SB_TimeStampMsg((CFE_MSG_Message_t *) &CAM_AppData.Exp_Pkt);
+        CFE_SB_TransmitMsg((CFE_MSG_Message_t *) &CAM_AppData.Exp_Pkt, true);
     OS_MutSemGive(CAM_AppData.data_mutex);
     return OS_SUCCESS;
 } /* End of CAM_publish() */
-
-
-/* 
-**  Name:  CAM_eoe_publish                                       
-**                                                                            
-**  Purpose:                                                                  
-** 		   Break apart functionality, publish experiment complete / falure.
-*/
-int32 CAM_eoe_publish(int32 value)
-{
-    OS_MutSemTake(CAM_AppData.data_mutex);
-
-        switch (CAM_AppData.Exp)
-        {
-            case 1:
-                if (value == OS_SUCCESS)
-                {
-                    CFE_SB_SetCmdCode((CFE_SB_Msg_t *) &CAM_AppData.EoE, CAM_MGR_EOE_1_SUCCESS_CC);
-                    CFE_SB_SendMsg((CFE_SB_Msg_t *) &CAM_AppData.EoE);
-                }
-                else
-                {
-                    CFE_SB_SetCmdCode((CFE_SB_Msg_t *) &CAM_AppData.EoE, CAM_MGR_EOE_1_FAILURE_CC);
-                    CFE_SB_SendMsg((CFE_SB_Msg_t *) &CAM_AppData.EoE);
-                }
-                break;
-            case 2:
-                if (value == OS_SUCCESS)
-                {
-                    CFE_SB_SetCmdCode((CFE_SB_Msg_t *) &CAM_AppData.EoE, CAM_MGR_EOE_2_SUCCESS_CC);
-                    CFE_SB_SendMsg((CFE_SB_Msg_t *) &CAM_AppData.EoE);
-                }
-                else
-                {
-                    CFE_SB_SetCmdCode((CFE_SB_Msg_t *) &CAM_AppData.EoE, CAM_MGR_EOE_2_FAILURE_CC);
-                    CFE_SB_SendMsg((CFE_SB_Msg_t *) &CAM_AppData.EoE);
-                }
-                break;
-            case 3:
-                if (value == OS_SUCCESS)
-                {
-                    CFE_SB_SetCmdCode((CFE_SB_Msg_t *) &CAM_AppData.EoE, CAM_MGR_EOE_3_SUCCESS_CC);
-                    CFE_SB_SendMsg((CFE_SB_Msg_t *) &CAM_AppData.EoE);
-                }
-                else
-                {
-                    CFE_SB_SetCmdCode((CFE_SB_Msg_t *) &CAM_AppData.EoE, CAM_MGR_EOE_3_FAILURE_CC);
-                    CFE_SB_SendMsg((CFE_SB_Msg_t *) &CAM_AppData.EoE);
-                }
-                break;
-            default:
-                CFE_EVS_SendEvent(CAM_CHILD_EXP_ERR_EID, CFE_EVS_ERROR, "CAM experiment ID error");
-                CAM_AppData.State = CAM_STOP;
-                break;
-        }
-    
-    OS_MutSemGive(CAM_AppData.data_mutex);
-
-    return OS_SUCCESS;
-} /* End of CAM_eoe_publish() */
 
 
 /* 
@@ -145,16 +85,15 @@ int32 CAM_state(void)
     switch (state)
     {
         case CAM_LOW_VOLTAGE:
-            CFE_EVS_SendEvent(CAM_LOW_VOLTAGE_EID, CFE_EVS_INFORMATION, "CAM child task low voltage received");
+            CFE_EVS_SendEvent(CAM_LOW_VOLTAGE_EID, CFE_EVS_EventType_INFORMATION, "CAM child task low voltage received");
             break;
         
         case CAM_TIME:
-            CFE_EVS_SendEvent(CAM_TIME_EID, CFE_EVS_INFORMATION, "CAM child task timeout received");
+            CFE_EVS_SendEvent(CAM_TIME_EID, CFE_EVS_EventType_INFORMATION, "CAM child task timeout received");
             break;
 
         case CAM_STOP:
-            // Send experiment error message to MGR
-            CAM_eoe_publish(result);
+            // Do nothing
             break;
         
         case CAM_PAUSE:
@@ -199,7 +138,7 @@ int32 CAM_fifo(uint16* x, uint8* status)
         OS_MutSemGive(CAM_AppData.data_mutex);
         if (result != OS_SUCCESS)
         {	
-            CFE_EVS_SendEvent(CAM_READ_ERR_EID, CFE_EVS_ERROR, "CAM read error");
+            CFE_EVS_SendEvent(CAM_READ_ERR_EID, CFE_EVS_EventType_ERROR, "CAM read error");
             OS_MutSemTake(CAM_AppData.data_mutex);
                 CAM_AppData.State = CAM_STOP;
             OS_MutSemGive(CAM_AppData.data_mutex);
@@ -211,7 +150,7 @@ int32 CAM_fifo(uint16* x, uint8* status)
         result = CAM_publish();
         if (result != OS_SUCCESS)
         {	
-            CFE_EVS_SendEvent(CAM_PUBLISH_ERR_EID, CFE_EVS_ERROR, "CAM publish error");
+            CFE_EVS_SendEvent(CAM_PUBLISH_ERR_EID, CFE_EVS_EventType_ERROR, "CAM publish error");
             OS_MutSemTake(CAM_AppData.data_mutex);
                 CAM_AppData.State = CAM_STOP;
             OS_MutSemGive(CAM_AppData.data_mutex);
@@ -253,7 +192,7 @@ int32 CAM_exp(void)
         result = CAM_init_spi();
         if (result != OS_SUCCESS)
         {	
-            CFE_EVS_SendEvent(CAM_INIT_SPI_ERR_EID, CFE_EVS_ERROR, "CAM init spi error");
+            CFE_EVS_SendEvent(CAM_INIT_SPI_ERR_EID, CFE_EVS_EventType_ERROR, "CAM init spi error");
             OS_MutSemTake(CAM_AppData.data_mutex);
                 CAM_AppData.State = CAM_STOP;
             OS_MutSemGive(CAM_AppData.data_mutex);
@@ -264,7 +203,7 @@ int32 CAM_exp(void)
         result = CAM_init_i2c();
         if (result != OS_SUCCESS)
         {	
-            CFE_EVS_SendEvent(CAM_INIT_I2C_ERR_EID, CFE_EVS_ERROR, "CAM init i2c error");
+            CFE_EVS_SendEvent(CAM_INIT_I2C_ERR_EID, CFE_EVS_EventType_ERROR, "CAM init i2c error");
             OS_MutSemTake(CAM_AppData.data_mutex);
                 CAM_AppData.State = CAM_STOP;
             OS_MutSemGive(CAM_AppData.data_mutex);
@@ -275,7 +214,7 @@ int32 CAM_exp(void)
         result = CAM_config();
         if (result != OS_SUCCESS)
         {	
-            CFE_EVS_SendEvent(CAM_CONFIG_ERR_EID, CFE_EVS_ERROR, "CAM configure camera for upload error");
+            CFE_EVS_SendEvent(CAM_CONFIG_ERR_EID, CFE_EVS_EventType_ERROR, "CAM configure camera for upload error");
             OS_MutSemTake(CAM_AppData.data_mutex);
                 CAM_AppData.State = CAM_STOP;
             OS_MutSemGive(CAM_AppData.data_mutex);
@@ -286,7 +225,7 @@ int32 CAM_exp(void)
         result = CAM_jpeg_init();
         if (result != OS_SUCCESS)
         {	
-            CFE_EVS_SendEvent(CAM_JPEG_INIT_ERR_EID, CFE_EVS_ERROR, "CAM jpeg init error");
+            CFE_EVS_SendEvent(CAM_JPEG_INIT_ERR_EID, CFE_EVS_EventType_ERROR, "CAM jpeg init error");
             OS_MutSemTake(CAM_AppData.data_mutex);
                 CAM_AppData.State = CAM_STOP;
             OS_MutSemGive(CAM_AppData.data_mutex);
@@ -297,7 +236,7 @@ int32 CAM_exp(void)
         result = CAM_yuv422();
         if (result != OS_SUCCESS)
         {	
-            CFE_EVS_SendEvent(CAM_YUV422_ERR_EID, CFE_EVS_ERROR, "CAM yuv422 error");
+            CFE_EVS_SendEvent(CAM_YUV422_ERR_EID, CFE_EVS_EventType_ERROR, "CAM yuv422 error");
             OS_MutSemTake(CAM_AppData.data_mutex);
                 CAM_AppData.State = CAM_STOP;
             OS_MutSemGive(CAM_AppData.data_mutex);
@@ -308,7 +247,7 @@ int32 CAM_exp(void)
         result = CAM_jpeg();
         if (result != OS_SUCCESS)
         {	
-            CFE_EVS_SendEvent(CAM_JPEG_ERR_EID, CFE_EVS_ERROR, "CAM jpeg error");
+            CFE_EVS_SendEvent(CAM_JPEG_ERR_EID, CFE_EVS_EventType_ERROR, "CAM jpeg error");
             OS_MutSemTake(CAM_AppData.data_mutex);
                 CAM_AppData.State = CAM_STOP;
             OS_MutSemGive(CAM_AppData.data_mutex);
@@ -319,7 +258,7 @@ int32 CAM_exp(void)
         result = CAM_setup();
         if (result != OS_SUCCESS)
         {	
-            CFE_EVS_SendEvent(CAM_SETUP_ERR_EID, CFE_EVS_ERROR, "CAM setup error");
+            CFE_EVS_SendEvent(CAM_SETUP_ERR_EID, CFE_EVS_EventType_ERROR, "CAM setup error");
             OS_MutSemTake(CAM_AppData.data_mutex);
                 CAM_AppData.State = CAM_STOP;
             OS_MutSemGive(CAM_AppData.data_mutex);
@@ -330,7 +269,7 @@ int32 CAM_exp(void)
         result = CAM_setSize(CAM_AppData.Size);
         if (result != OS_SUCCESS)
         {	
-            CFE_EVS_SendEvent(CAM_SET_SIZE_ERR_EID, CFE_EVS_ERROR, "CAM upload size error");
+            CFE_EVS_SendEvent(CAM_SET_SIZE_ERR_EID, CFE_EVS_EventType_ERROR, "CAM upload size error");
             OS_MutSemTake(CAM_AppData.data_mutex);
                 CAM_AppData.State = CAM_STOP;
             OS_MutSemGive(CAM_AppData.data_mutex);
@@ -341,7 +280,7 @@ int32 CAM_exp(void)
         result = CAM_capture_prep();
         if (result != OS_SUCCESS)
         {	
-            CFE_EVS_SendEvent(CAM_CAPTURE_PREP_ERR_EID, CFE_EVS_ERROR, "CAM capture prep error");
+            CFE_EVS_SendEvent(CAM_CAPTURE_PREP_ERR_EID, CFE_EVS_EventType_ERROR, "CAM capture prep error");
             OS_MutSemTake(CAM_AppData.data_mutex);
                 CAM_AppData.State = CAM_STOP;
             OS_MutSemGive(CAM_AppData.data_mutex);
@@ -352,7 +291,7 @@ int32 CAM_exp(void)
         result = CAM_capture();
         if (result != OS_SUCCESS)
         {	
-            CFE_EVS_SendEvent(CAM_CAPTURE_ERR_EID, CFE_EVS_ERROR, "CAM capture error");
+            CFE_EVS_SendEvent(CAM_CAPTURE_ERR_EID, CFE_EVS_EventType_ERROR, "CAM capture error");
             OS_MutSemTake(CAM_AppData.data_mutex);
                 CAM_AppData.State = CAM_STOP;
             OS_MutSemGive(CAM_AppData.data_mutex);
@@ -363,7 +302,7 @@ int32 CAM_exp(void)
         result = CAM_read_fifo_length(&CAM_AppData.Exp_Pkt.length);
         if (result != OS_SUCCESS)
         {	
-            CFE_EVS_SendEvent(CAM_READ_FIFO_LEN_ERR_EID, CFE_EVS_ERROR, "CAM read fifo length error");
+            CFE_EVS_SendEvent(CAM_READ_FIFO_LEN_ERR_EID, CFE_EVS_EventType_ERROR, "CAM read fifo length error");
             OS_MutSemTake(CAM_AppData.data_mutex);
                 CAM_AppData.State = CAM_STOP;
             OS_MutSemGive(CAM_AppData.data_mutex);
@@ -377,7 +316,7 @@ int32 CAM_exp(void)
         OS_MutSemGive(CAM_AppData.data_mutex);
         if (result != OS_SUCCESS)
         {	
-            CFE_EVS_SendEvent(CAM_READ_PREP_ERR_EID, CFE_EVS_ERROR, "CAM read prep error");
+            CFE_EVS_SendEvent(CAM_READ_PREP_ERR_EID, CFE_EVS_EventType_ERROR, "CAM read prep error");
             OS_MutSemTake(CAM_AppData.data_mutex);
                 CAM_AppData.State = CAM_STOP;
             OS_MutSemGive(CAM_AppData.data_mutex);
@@ -404,19 +343,9 @@ void CAM_ChildTask(void)
     int32  result;
     int32  state;
 
-    result = CFE_ES_RegisterChildTask();
-    if(result != CFE_SUCCESS)
-    {
-        CFE_EVS_SendEvent(CAM_CHILD_REG_ERR_EID, CFE_EVS_ERROR, "CAM APP: reg child task error %d", result);
-        CFE_ES_ExitChildTask();
-        return;
-    }
-    else
-    {
-        CFE_EVS_SendEvent(CAM_CHILD_INIT_EID, CFE_EVS_INFORMATION, "CAM child task initialization complete");
-    }
+    CFE_EVS_SendEvent(CAM_CHILD_INIT_EID, CFE_EVS_EventType_INFORMATION, "CAM child task initialization complete");
 
-    while (TRUE)
+    while (true)
     {
         // Block on Semaphore
         OS_BinSemTake(CAM_AppData.sem_id);
@@ -469,7 +398,7 @@ void CAM_ChildTask(void)
                     #endif
                     break;
                 default:
-                    CFE_EVS_SendEvent(CAM_CHILD_EXP_ERR_EID, CFE_EVS_ERROR, "CAM experiment ID error");
+                    CFE_EVS_SendEvent(CAM_CHILD_EXP_ERR_EID, CFE_EVS_EventType_ERROR, "CAM experiment ID error");
                     CAM_AppData.State = CAM_STOP;
                     break;
             }
@@ -484,21 +413,19 @@ void CAM_ChildTask(void)
                 switch (CAM_AppData.Exp)
                 {
                     case 1:
-                        CFE_EVS_SendEvent(CAM_EXP1_EID, CFE_EVS_INFORMATION, "CAM EXP1 Complete");
+                        CFE_EVS_SendEvent(CAM_EXP1_EID, CFE_EVS_EventType_INFORMATION, "CAM EXP1 Complete");
                         break;
                     case 2:
-                        CFE_EVS_SendEvent(CAM_EXP2_EID, CFE_EVS_INFORMATION, "CAM EXP2 Complete");
+                        CFE_EVS_SendEvent(CAM_EXP2_EID, CFE_EVS_EventType_INFORMATION, "CAM EXP2 Complete");
                         break;
                     case 3:
-                        CFE_EVS_SendEvent(CAM_EXP3_EID, CFE_EVS_INFORMATION, "CAM EXP3 Complete");
+                        CFE_EVS_SendEvent(CAM_EXP3_EID, CFE_EVS_EventType_INFORMATION, "CAM EXP3 Complete");
                         break;
                     default:
                         break;
                 }
                 // Delay to allow for all CAM Tlm messages to be cleared from pipe
                 OS_TaskDelay(10000);
-                // Send experiment complete message to MGR
-                CAM_eoe_publish((result));
             }
             // Cleanup
             CAM_AppData.State = CAM_STOP;
@@ -506,7 +433,7 @@ void CAM_ChildTask(void)
     }
 
     /* This call allows cFE to clean-up system resources */
-    CFE_EVS_SendEvent(CAM_CHILD_INIT_EID, CFE_EVS_INFORMATION,
+    CFE_EVS_SendEvent(CAM_CHILD_INIT_EID, CFE_EVS_EventType_INFORMATION,
         "CAM child task exit complete");
     CFE_ES_ExitChildTask();
 } /* End of CAM_ChildTask() */

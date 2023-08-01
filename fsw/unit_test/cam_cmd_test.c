@@ -39,11 +39,11 @@ static void CAM_Cmd_Test_NOOP(void)
 
     /* init noop cmd */
     CAM_NoArgsCmd_t cmd;
-    Ut_CFE_SB_InitMsgHook(&cmd, CAM_CMD_MID, sizeof(CAM_NoArgsCmd_t), TRUE);
-    Ut_CFE_SB_SetCmdCodeHook((CFE_SB_MsgPtr_t)&cmd, CAM_NOOP_CC);
+    Ut_CFE_MSG_InitHook(&cmd, CAM_CMD_MID, sizeof(CAM_NoArgsCmd_t), true);
+    Ut_CFE_SB_SetCmdCodeHook((CFE_MSG_Message_t *)&cmd, CAM_NOOP_CC);
 
     /* process cmd */
-    CAM_AppData.MsgPtr = (CFE_SB_MsgPtr_t)&cmd;
+    CAM_AppData.MsgPtr = (CFE_MSG_Message_t *)&cmd;
     CAM_ProcessCommandPacket();
     
     /* cmd counters */
@@ -60,11 +60,11 @@ static void CAM_Cmd_Test_RESET_COUNTERS(void)
 
     /* init reset counters cmd */
     CAM_NoArgsCmd_t cmd;
-    Ut_CFE_SB_InitMsgHook(&cmd, CAM_CMD_MID, sizeof(CAM_NoArgsCmd_t), TRUE);
-    Ut_CFE_SB_SetCmdCodeHook((CFE_SB_MsgPtr_t)&cmd, CAM_RESET_COUNTERS_CC);
+    Ut_CFE_MSG_InitHook(&cmd, CAM_CMD_MID, sizeof(CAM_NoArgsCmd_t), true);
+    Ut_CFE_SB_SetCmdCodeHook((CFE_MSG_Message_t *)&cmd, CAM_RESET_COUNTERS_CC);
 
     /* process cmd */
-    CAM_AppData.MsgPtr = (CFE_SB_MsgPtr_t)&cmd;
+    CAM_AppData.MsgPtr = (CFE_MSG_Message_t *)&cmd;
     CAM_ProcessCommandPacket();
     
     /* cmd counters */
@@ -81,11 +81,11 @@ static void CAM_Cmd_Test_STOP(void)
 
     /* init stop cmd */
     CAM_NoArgsCmd_t cmd;
-    Ut_CFE_SB_InitMsgHook(&cmd, CAM_CMD_MID, sizeof(CAM_NoArgsCmd_t), TRUE);
-    Ut_CFE_SB_SetCmdCodeHook((CFE_SB_MsgPtr_t)&cmd, CAM_STOP_CC);
+    Ut_CFE_MSG_InitHook(&cmd, CAM_CMD_MID, sizeof(CAM_NoArgsCmd_t), true);
+    Ut_CFE_SB_SetCmdCodeHook((CFE_MSG_Message_t *)&cmd, CAM_STOP_CC);
 
     /* process cmd */
-    CAM_AppData.MsgPtr = (CFE_SB_MsgPtr_t)&cmd;
+    CAM_AppData.MsgPtr = (CFE_MSG_Message_t *)&cmd;
     CAM_ProcessCommandPacket();
 
     /* cmd counters */
@@ -106,11 +106,11 @@ static void CAM_Cmd_Test_PAUSE(void)
 
     /* init pause cmd */
     CAM_NoArgsCmd_t cmd;
-    Ut_CFE_SB_InitMsgHook(&cmd, CAM_CMD_MID, sizeof(CAM_NoArgsCmd_t), TRUE);
-    Ut_CFE_SB_SetCmdCodeHook((CFE_SB_MsgPtr_t)&cmd, CAM_PAUSE_CC);
+    Ut_CFE_MSG_InitHook(&cmd, CAM_CMD_MID, sizeof(CAM_NoArgsCmd_t), true);
+    Ut_CFE_SB_SetCmdCodeHook((CFE_MSG_Message_t *)&cmd, CAM_PAUSE_CC);
 
     /* process cmd */
-    CAM_AppData.MsgPtr = (CFE_SB_MsgPtr_t)&cmd;
+    CAM_AppData.MsgPtr = (CFE_MSG_Message_t *)&cmd;
     CAM_ProcessCommandPacket();
     
     /* cmd counters */
@@ -131,11 +131,11 @@ static void CAM_Cmd_Test_RESUME(void)
 
     /* init resume cmd */
     CAM_NoArgsCmd_t cmd;
-    Ut_CFE_SB_InitMsgHook(&cmd, CAM_CMD_MID, sizeof(CAM_NoArgsCmd_t), TRUE);
-    Ut_CFE_SB_SetCmdCodeHook((CFE_SB_MsgPtr_t)&cmd, CAM_RESUME_CC);
+    Ut_CFE_MSG_InitHook(&cmd, CAM_CMD_MID, sizeof(CAM_NoArgsCmd_t), true);
+    Ut_CFE_SB_SetCmdCodeHook((CFE_MSG_Message_t *)&cmd, CAM_RESUME_CC);
 
     /* process cmd */
-    CAM_AppData.MsgPtr = (CFE_SB_MsgPtr_t)&cmd;
+    CAM_AppData.MsgPtr = (CFE_MSG_Message_t *)&cmd;
     CAM_ProcessCommandPacket();
     
     /* cmd counters */
@@ -156,11 +156,11 @@ static void CAM_Cmd_Test_TIMEOUT(void)
 
 	/* init timeout cmd */
 	CAM_NoArgsCmd_t cmd;
-    Ut_CFE_SB_InitMsgHook(&cmd, CAM_CMD_MID, sizeof(CAM_NoArgsCmd_t), TRUE);
-    Ut_CFE_SB_SetCmdCodeHook((CFE_SB_MsgPtr_t)&cmd, CAM_TIMEOUT_CC);
+    Ut_CFE_MSG_InitHook(&cmd, CAM_CMD_MID, sizeof(CAM_NoArgsCmd_t), true);
+    Ut_CFE_SB_SetCmdCodeHook((CFE_MSG_Message_t *)&cmd, CAM_TIMEOUT_CC);
 
     /* process cmd */
-    CAM_AppData.MsgPtr = (CFE_SB_MsgPtr_t)&cmd;
+    CAM_AppData.MsgPtr = (CFE_MSG_Message_t *)&cmd;
     CAM_ProcessCommandPacket();
 
 	 /* cmd counters */
@@ -181,11 +181,11 @@ static void CAM_Cmd_Test_LOW_VOLTAGE(void)
 
 	/* init timeout cmd */
 	CAM_NoArgsCmd_t cmd;
-    Ut_CFE_SB_InitMsgHook(&cmd, CAM_CMD_MID, sizeof(CAM_NoArgsCmd_t), TRUE);
-    Ut_CFE_SB_SetCmdCodeHook((CFE_SB_MsgPtr_t)&cmd, CAM_LOW_VOLTAGE_CC);
+    Ut_CFE_MSG_InitHook(&cmd, CAM_CMD_MID, sizeof(CAM_NoArgsCmd_t), true);
+    Ut_CFE_SB_SetCmdCodeHook((CFE_MSG_Message_t *)&cmd, CAM_LOW_VOLTAGE_CC);
 
     /* process cmd */
-    CAM_AppData.MsgPtr = (CFE_SB_MsgPtr_t)&cmd;
+    CAM_AppData.MsgPtr = (CFE_MSG_Message_t *)&cmd;
     CAM_ProcessCommandPacket();
 
 	 /* cmd counters */
@@ -206,11 +206,11 @@ static void CAM_Cmd_Test_EXP1(void)
 
 	/* init timeout cmd */
 	CAM_NoArgsCmd_t cmd;
-    Ut_CFE_SB_InitMsgHook(&cmd, CAM_CMD_MID, sizeof(CAM_NoArgsCmd_t), TRUE);
-    Ut_CFE_SB_SetCmdCodeHook((CFE_SB_MsgPtr_t)&cmd, CAM_EXP1_CC);
+    Ut_CFE_MSG_InitHook(&cmd, CAM_CMD_MID, sizeof(CAM_NoArgsCmd_t), true);
+    Ut_CFE_SB_SetCmdCodeHook((CFE_MSG_Message_t *)&cmd, CAM_EXP1_CC);
 
     /* process cmd */
-    CAM_AppData.MsgPtr = (CFE_SB_MsgPtr_t)&cmd;
+    CAM_AppData.MsgPtr = (CFE_MSG_Message_t *)&cmd;
     CAM_ProcessCommandPacket();
 
 	 /* cmd counters */
@@ -232,11 +232,11 @@ static void CAM_Cmd_Test_EXP2(void)
 
 	/* init timeout cmd */
 	CAM_NoArgsCmd_t cmd;
-    Ut_CFE_SB_InitMsgHook(&cmd, CAM_CMD_MID, sizeof(CAM_NoArgsCmd_t), TRUE);
-    Ut_CFE_SB_SetCmdCodeHook((CFE_SB_MsgPtr_t)&cmd, CAM_EXP2_CC);
+    Ut_CFE_MSG_InitHook(&cmd, CAM_CMD_MID, sizeof(CAM_NoArgsCmd_t), true);
+    Ut_CFE_SB_SetCmdCodeHook((CFE_MSG_Message_t *)&cmd, CAM_EXP2_CC);
 
     /* process cmd */
-    CAM_AppData.MsgPtr = (CFE_SB_MsgPtr_t)&cmd;
+    CAM_AppData.MsgPtr = (CFE_MSG_Message_t *)&cmd;
     CAM_ProcessCommandPacket();
 
 	 /* cmd counters */
@@ -258,11 +258,11 @@ static void CAM_Cmd_Test_EXP3(void)
 
 	/* init timeout cmd */
 	CAM_NoArgsCmd_t cmd;
-    Ut_CFE_SB_InitMsgHook(&cmd, CAM_CMD_MID, sizeof(CAM_NoArgsCmd_t), TRUE);
-    Ut_CFE_SB_SetCmdCodeHook((CFE_SB_MsgPtr_t)&cmd, CAM_EXP3_CC);
+    Ut_CFE_MSG_InitHook(&cmd, CAM_CMD_MID, sizeof(CAM_NoArgsCmd_t), true);
+    Ut_CFE_SB_SetCmdCodeHook((CFE_MSG_Message_t *)&cmd, CAM_EXP3_CC);
 
     /* process cmd */
-    CAM_AppData.MsgPtr = (CFE_SB_MsgPtr_t)&cmd;
+    CAM_AppData.MsgPtr = (CFE_MSG_Message_t *)&cmd;
     CAM_ProcessCommandPacket();
 
 	 /* cmd counters */
@@ -278,16 +278,16 @@ static void CAM_Cmd_Test_EXP3(void)
 static void CAM_Cmd_Test_HK(void)
 {
     /* init data */
-    Ut_CFE_SB_InitMsgHook(&CAM_AppData.HkTelemetryPkt, CAM_HK_TLM_MID, CAM_HK_TLM_LNGTH, TRUE);
+    Ut_CFE_MSG_InitHook(&CAM_AppData.HkTelemetryPkt, CAM_HK_TLM_MID, CAM_HK_TLM_LNGTH, true);
     CAM_AppData.HkTelemetryPkt.CommandCount = 10;
     CAM_AppData.HkTelemetryPkt.CommandErrorCount = 20;
 
     /* init HkTelemetryPkt cmd */
     CAM_NoArgsCmd_t cmd;
-    Ut_CFE_SB_InitMsgHook(&cmd, CAM_SEND_HK_MID, sizeof(CAM_NoArgsCmd_t), TRUE);
+    Ut_CFE_MSG_InitHook(&cmd, CAM_SEND_HK_MID, sizeof(CAM_NoArgsCmd_t), true);
 
     /* process cmd */
-    CAM_AppData.MsgPtr = (CFE_SB_MsgPtr_t)&cmd;
+    CAM_AppData.MsgPtr = (CFE_MSG_Message_t *)&cmd;
     CAM_ProcessCommandPacket();
     
     /* cmd counters */
@@ -314,11 +314,11 @@ static void CAM_Cmd_Test_INVALID_CC(void)
 
     /* init invalid cmd */
     CAM_NoArgsCmd_t cmd;
-    Ut_CFE_SB_InitMsgHook(&cmd, CAM_CMD_MID, sizeof(CAM_NoArgsCmd_t), TRUE);
-    Ut_CFE_SB_SetCmdCodeHook((CFE_SB_MsgPtr_t)&cmd, 100);
+    Ut_CFE_MSG_InitHook(&cmd, CAM_CMD_MID, sizeof(CAM_NoArgsCmd_t), true);
+    Ut_CFE_SB_SetCmdCodeHook((CFE_MSG_Message_t *)&cmd, 100);
 
     /* process cmd */
-    CAM_AppData.MsgPtr = (CFE_SB_MsgPtr_t)&cmd;
+    CAM_AppData.MsgPtr = (CFE_MSG_Message_t *)&cmd;
     CAM_ProcessCommandPacket();
     
     /* cmd counters */
@@ -337,11 +337,11 @@ static void CAM_Cmd_Test_INVALID_MSG(void)
 
     /* init invalid cmd */
     CAM_NoArgsCmd_t cmd;
-    Ut_CFE_SB_InitMsgHook(&cmd, 50, sizeof(CAM_NoArgsCmd_t), TRUE);
-    Ut_CFE_SB_SetCmdCodeHook((CFE_SB_MsgPtr_t)&cmd, CAM_NOOP_CC);
+    Ut_CFE_MSG_InitHook(&cmd, 50, sizeof(CAM_NoArgsCmd_t), true);
+    Ut_CFE_SB_SetCmdCodeHook((CFE_MSG_Message_t *)&cmd, CAM_NOOP_CC);
 
     /* process cmd */
-    CAM_AppData.MsgPtr = (CFE_SB_MsgPtr_t)&cmd;
+    CAM_AppData.MsgPtr = (CFE_MSG_Message_t *)&cmd;
     CAM_ProcessCommandPacket();
     
     /* cmd counters */
@@ -360,11 +360,11 @@ static void CAM_Cmd_Test_INVALID_LENGTH(void)
 
     /* init invalid cmd */
     CAM_Exp_tlm_t cmd;
-    Ut_CFE_SB_InitMsgHook(&cmd, CAM_CMD_MID, sizeof(CAM_Exp_tlm_t), TRUE);
-    Ut_CFE_SB_SetCmdCodeHook((CFE_SB_MsgPtr_t)&cmd, CAM_NOOP_CC);
+    Ut_CFE_MSG_InitHook(&cmd, CAM_CMD_MID, sizeof(CAM_Exp_tlm_t), true);
+    Ut_CFE_SB_SetCmdCodeHook((CFE_MSG_Message_t *)&cmd, CAM_NOOP_CC);
 
     /* process cmd */
-    CAM_AppData.MsgPtr = (CFE_SB_MsgPtr_t)&cmd;
+    CAM_AppData.MsgPtr = (CFE_MSG_Message_t *)&cmd;
     CAM_ProcessCommandPacket();
     
     /* cmd counters */

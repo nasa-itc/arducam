@@ -1820,7 +1820,7 @@ static int32 arducam_i2c_write_regs(struct sensor_reg*);
 int32 CAM_LibInit(void)
 {
     #ifdef STF1_DEBUG
-        CFE_EVS_SendEvent(HWLIB_INIT_EID, CFE_EVS_DEBUG, "CAM_LibInit(): Initializing the CAM HW");
+        CFE_EVS_SendEvent(HWLIB_INIT_EID, CFE_EVS_EventType_DEBUG, "CAM_LibInit(): Initializing the CAM HW");
     #endif
 
     return OS_SUCCESS;
