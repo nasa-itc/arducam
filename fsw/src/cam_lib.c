@@ -37,6 +37,7 @@ ivv-itc@lists.nasa.gov
 /*************************************************************************
 ** Global Data 
 *************************************************************************/
+i2c_bus_info_t CAM_I2C;
 spi_info_t CAM_SPI;
 
 /*************************************************************************
@@ -1819,7 +1820,7 @@ static int32 arducam_i2c_write_regs(struct sensor_reg*);
 int32 CAM_LibInit(void)
 {
     #ifdef STF1_DEBUG
-        CFE_EVS_SendEvent(HWLIB_INIT_EID, CFE_EVS_DEBUG, "CAM_LibInit(): Initializing the CAM HW");
+        CFE_EVS_SendEvent(HWLIB_INIT_EID, CFE_EVS_EventType_DEBUG, "CAM_LibInit(): Initializing the CAM HW");
     #endif
 
     return OS_SUCCESS;
@@ -1832,43 +1833,50 @@ int32 CAM_init_i2c(void)
     uint8_t  temp = 0;
     uint8_t  vid, pid;
 
+    CAM_I2C.handle = CAM_I2C_BUS;
+    CAM_I2C.isOpen = PORT_CLOSED;
+    CAM_I2C.speed = CAM_SPEED;
+    CAM_I2C.addr = CAM_ADDR;
+
+    i2c_master_init(&CAM_I2C);
+
     while ( (temp < 10) && (result != OS_SUCCESS) )
     {   
         // Change register set to camera
         #ifdef OV2640
         data[0] = 0xFF; 
         data[1] = 0x01;
-        i2c_master_transaction(CAM_I2C, CAM_ADDR, &data, 2, NULL, 0, CAM_TIMEOUT);
+        i2c_master_transaction(&CAM_I2C, CAM_ADDR, &data, 2, NULL, 0, CAM_TIMEOUT);
         #endif
         #if (defined(OV5640) || defined(OV5642))
         data[0] = 0x00; 
         data[1] = 0xFF;
         data[2] = 0x01;
-        i2c_master_transaction(CAM_I2C, CAM_ADDR, &data, 3, NULL, 0, CAM_TIMEOUT);
+        i2c_master_transaction(&CAM_I2C, CAM_ADDR, &data, 3, NULL, 0, CAM_TIMEOUT);
         #endif
 
         // Test register 1
         #ifdef OV2640
         data[0] = CHIPID_HIGH; // 0x0A
         data[1] = 0x00;
-        i2c_master_transaction(CAM_I2C, CAM_ADDR, &data, 2, &vid, 1, CAM_TIMEOUT);
+        i2c_master_transaction(&CAM_I2C, CAM_ADDR, &data, 2, &vid, 1, CAM_TIMEOUT);
         #endif
         #if (defined(OV5640) || defined(OV5642))
         data[0] = (CHIPID_HIGH & 0xFF00) >> 8;
         data[1] = (CHIPID_HIGH & 0x00FF);
-        i2c_master_transaction(CAM_I2C, CAM_ADDR, &data, 2, &vid, 1, CAM_TIMEOUT);
+        i2c_master_transaction(&CAM_I2C, CAM_ADDR, &data, 2, &vid, 1, CAM_TIMEOUT);
         #endif
 
         // Test register 2
         #ifdef OV2640
         data[0] = CHIPID_LOW; // 0x0B
         data[1] = 0x00;
-        i2c_master_transaction(CAM_I2C, CAM_ADDR, &data, 2, &pid, 1, CAM_TIMEOUT);
+        i2c_master_transaction(&CAM_I2C, CAM_ADDR, &data, 2, &pid, 1, CAM_TIMEOUT);
         #endif
         #if (defined(OV5640) || defined(OV5642))
         data[0] = (CHIPID_LOW & 0xFF00) >> 8;
         data[1] = (CHIPID_LOW & 0x00FF);
-        i2c_master_transaction(CAM_I2C, CAM_ADDR, &data, 2, &pid, 1, CAM_TIMEOUT);
+        i2c_master_transaction(&CAM_I2C, CAM_ADDR, &data, 2, &pid, 1, CAM_TIMEOUT);
         #endif
         
         #ifdef STF1_DEBUG
@@ -1985,28 +1993,28 @@ int32 CAM_config(void)
             // Change register set to camera
             data[0] = 0xFF; 
             data[1] = 0x01;
-            i2c_master_transaction(CAM_I2C, CAM_ADDR, &data, 2, NULL, 0, CAM_TIMEOUT);
+            i2c_master_transaction(&CAM_I2C, CAM_ADDR, &data, 2, NULL, 0, CAM_TIMEOUT);
             // Common control 7
             data[0] = 0x12; 
             data[1] = 0x80;
-            i2c_master_transaction(CAM_I2C, CAM_ADDR, &data, 2, NULL, 0, CAM_TIMEOUT);
+            i2c_master_transaction(&CAM_I2C, CAM_ADDR, &data, 2, NULL, 0, CAM_TIMEOUT);
             #endif
             #ifdef OV5640
             OS_TaskDelay(100);
             data[0] = 0x31;
             data[1] = 0x03;
             data[2] = 0x11;
-            i2c_master_transaction(CAM_I2C, CAM_ADDR, &data, 3, NULL, 0, CAM_TIMEOUT);
+            i2c_master_transaction(&CAM_I2C, CAM_ADDR, &data, 3, NULL, 0, CAM_TIMEOUT);
             data[0] = 0x30;
             data[1] = 0x08;
             data[2] = 0x82;
-            i2c_master_transaction(CAM_I2C, CAM_ADDR, &data, 3, NULL, 0, CAM_TIMEOUT);
+            i2c_master_transaction(&CAM_I2C, CAM_ADDR, &data, 3, NULL, 0, CAM_TIMEOUT);
             #endif
             #ifdef OV5642
             data[0] = 0x30;
             data[1] = 0x08;
             data[2] = 0x80;
-            i2c_master_transaction(CAM_I2C, CAM_ADDR, &data, 3, NULL, 0, CAM_TIMEOUT);
+            i2c_master_transaction(&CAM_I2C, CAM_ADDR, &data, 3, NULL, 0, CAM_TIMEOUT);
             #endif
             
             OS_TaskDelay(100);
@@ -2071,7 +2079,7 @@ int32 CAM_jpeg(void)
     data[0] = 0x44;
     data[1] = 0x07;
     data[2] = 0x04;
-    i2c_master_transaction(CAM_I2C, CAM_ADDR, &data, 3, NULL, 0, CAM_TIMEOUT);
+    i2c_master_transaction(&CAM_I2C, CAM_ADDR, &data, 3, NULL, 0, CAM_TIMEOUT);
     #endif
     #ifdef OV5642
     result = arducam_i2c_write_regs(ov5642_dvp_fmt_jpeg_qvga);
@@ -2088,11 +2096,11 @@ int32 CAM_setup(void)
     // Change register set to camera
     data[0] = 0xFF; 
     data[1] = 0x01;
-    i2c_master_transaction(CAM_I2C, CAM_ADDR, &data, 2, NULL, 0, CAM_TIMEOUT);
+    i2c_master_transaction(&CAM_I2C, CAM_ADDR, &data, 2, NULL, 0, CAM_TIMEOUT);
     // Common control 10
     data[0] = 0x15; 
     data[1] = 0x00;
-    i2c_master_transaction(CAM_I2C, CAM_ADDR, &data, 2, NULL, 0, CAM_TIMEOUT);
+    i2c_master_transaction(&CAM_I2C, CAM_ADDR, &data, 2, NULL, 0, CAM_TIMEOUT);
     #endif
  
     return result;
@@ -2180,15 +2188,15 @@ static int32 CAM_setSize_OV5642(void)
     data[0] = 0x38; 
     data[1] = 0x18;
     data[2] = 0xA8;
-    i2c_master_transaction(CAM_I2C, CAM_ADDR, &data, 3, NULL, 0, CAM_TIMEOUT);
+    i2c_master_transaction(&CAM_I2C, CAM_ADDR, &data, 3, NULL, 0, CAM_TIMEOUT);
     data[0] = 0x36; 
     data[1] = 0x21;
     data[2] = 0x10;
-    i2c_master_transaction(CAM_I2C, CAM_ADDR, &data, 3, NULL, 0, CAM_TIMEOUT);
+    i2c_master_transaction(&CAM_I2C, CAM_ADDR, &data, 3, NULL, 0, CAM_TIMEOUT);
     data[0] = 0x38; 
     data[1] = 0x01;
     data[2] = 0xC8;
-    i2c_master_transaction(CAM_I2C, CAM_ADDR, &data, 3, NULL, 0, CAM_TIMEOUT);
+    i2c_master_transaction(&CAM_I2C, CAM_ADDR, &data, 3, NULL, 0, CAM_TIMEOUT);
 
     return result;
 }
@@ -2531,7 +2539,7 @@ static int32 arducam_i2c_write_regs(struct sensor_reg reglist[])
     {
         test[0] = next->reg; 
         test[1] = next->val;
-        result = i2c_master_transaction(CAM_I2C, CAM_ADDR, &test, 2, NULL, 0, CAM_TIMEOUT);
+        result = i2c_master_transaction(&CAM_I2C, CAM_ADDR, &test, 2, NULL, 0, CAM_TIMEOUT);
         OS_TaskDelay(1);  // Let other processes run
         if (result != -1) // OS_SUCCESS
         {
@@ -2541,7 +2549,7 @@ static int32 arducam_i2c_write_regs(struct sensor_reg reglist[])
         // Check that register was written properly
         /*
         test[2] = 0xFF;
-        result = i2c_master_transaction(CAM_I2C, CAM_ADDR, &test, 2, &test[2], 1, CAM_TIMEOUT);
+        result = i2c_master_transaction(&CAM_I2C, CAM_ADDR, &test, 2, &test[2], 1, CAM_TIMEOUT);
         if (test[2] != next->val)
         {
             OS_printf("----- arducam_i2c_write_regs: error on config check \n");
@@ -2559,7 +2567,7 @@ static int32 arducam_i2c_write_regs(struct sensor_reg reglist[])
 
         //OS_printf("test[0] = 0x%02x; test[1] = 0x%02x; test[2] = 0x%02x; \n", test[0],test[1],test[2]);
 
-        result = i2c_master_transaction(CAM_I2C, CAM_ADDR, &test, 3, NULL, 0, CAM_TIMEOUT);
+        result = i2c_master_transaction(&CAM_I2C, CAM_ADDR, &test, 3, NULL, 0, CAM_TIMEOUT);
         OS_TaskDelay(1);  // Let other processes run
         if (result != OS_SUCCESS) 
         {
@@ -2569,7 +2577,7 @@ static int32 arducam_i2c_write_regs(struct sensor_reg reglist[])
         // Check that register was written properly
         /*
         test[2] = 0xFF;
-        result = i2c_master_transaction(CAM_I2C, CAM_ADDR, &test, 2, &test[2], 1, CAM_TIMEOUT);
+        result = i2c_master_transaction(&CAM_I2C, CAM_ADDR, &test, 2, &test[2], 1, CAM_TIMEOUT);
         if (test[2] != next->val)
         {
             OS_printf("----- arducam_i2c_write_regs: error on config check \n");

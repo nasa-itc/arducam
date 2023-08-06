@@ -32,10 +32,10 @@ ivv-itc@lists.nasa.gov
 /************************************************************************
 ** Type Definitions
 *************************************************************************/
-#define CAM_I2C					2
-#define CAM_SPEED				1000000
-#define CAP_DONE_MASK      		0x08
-#define CAM_TIMEOUT				100
+#define CAM_I2C_BUS             2
+#define CAM_SPEED               1000000
+#define CAP_DONE_MASK           0x08
+#define CAM_TIMEOUT             100
 #define CAM_DATA_SIZE           1010
 
 // Select Hardware (only 1)

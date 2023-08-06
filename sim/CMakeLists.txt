@@ -29,8 +29,5 @@ add_library(cam_sim SHARED ${cam_sim_src} ${cam_sim_inc})
 target_link_libraries(cam_sim ${cam_sim_libs})
 install(TARGETS cam_sim LIBRARY DESTINATION lib ARCHIVE DESTINATION lib)
 
-add_executable(nos3-cam-simulator src/camsim.cpp)
-target_link_libraries(nos3-cam-simulator cam_sim ${cam_sim_libs})
-install(TARGETS nos3-cam-simulator RUNTIME DESTINATION bin)
 install(TARGETS cam_sim LIBRARY DESTINATION lib ARCHIVE DESTINATION lib)
 install(FILES src/cam.bin DESTINATION bin)

@@ -51,7 +51,7 @@ static void CAM_Init_Test_RegisterError(void)
 {
     Ut_CFE_ES_SetReturnCode(UT_CFE_ES_REGISTERAPP_INDEX, CFE_ES_ERR_APP_REGISTER, 1);
     cam_Main();
-    UtAssert_True(CAM_AppData.RunStatus == CFE_ES_APP_ERROR, "cam run status");
+    UtAssert_True(CAM_AppData.RunStatus == CFE_ES_RunStatus_APP_ERROR, "cam run status");
 }
 
 /* test init - create pipe error */
@@ -59,7 +59,7 @@ static void CAM_Init_Test_PipeError(void)
 {
     Ut_CFE_SB_SetReturnCode(UT_CFE_SB_CREATEPIPE_INDEX, CFE_SB_PIPE_RD_ERR, 1);
     cam_Main();
-    UtAssert_True(CAM_AppData.RunStatus == CFE_ES_APP_ERROR, "cam run status");
+    UtAssert_True(CAM_AppData.RunStatus == CFE_ES_RunStatus_APP_ERROR, "cam run status");
 }
 
 /* test init - subscribe error */
@@ -67,10 +67,10 @@ static void CAM_Init_Test_SubscribeError(void)
 {
     Ut_CFE_SB_SetReturnCode(UT_CFE_SB_SUBSCRIBE_INDEX, CFE_SB_INTERNAL_ERR, 1);
     cam_Main();
-    UtAssert_True(CAM_AppData.RunStatus == CFE_ES_APP_ERROR, "cam run status");
+    UtAssert_True(CAM_AppData.RunStatus == CFE_ES_RunStatus_APP_ERROR, "cam run status");
     Ut_CFE_SB_SetReturnCode(UT_CFE_SB_SUBSCRIBE_INDEX, CFE_SB_INTERNAL_ERR, 2);
     cam_Main();
-    UtAssert_True(CAM_AppData.RunStatus == CFE_ES_APP_ERROR, "cam run status");
+    UtAssert_True(CAM_AppData.RunStatus == CFE_ES_RunStatus_APP_ERROR, "cam run status");
 }
 
 /* test init - create mutex error */
@@ -78,7 +78,7 @@ static void CAM_Init_Test_MutexError(void)
 {
     Ut_OSAPI_SetReturnCode(UT_OSAPI_MUTSEMCREATE_INDEX, OS_ERROR, 1);
     cam_Main();
-    UtAssert_True(CAM_AppData.RunStatus == CFE_ES_APP_ERROR, "cam run status");
+    UtAssert_True(CAM_AppData.RunStatus == CFE_ES_RunStatus_APP_ERROR, "cam run status");
 }
 
 /* test init - create semaphore error */
@@ -86,7 +86,7 @@ static void CAM_Init_Test_BinSemError(void)
 {
     Ut_OSAPI_SetReturnCode(UT_OSAPI_BINSEMCREATE_INDEX, OS_ERROR, 1);
     cam_Main();
-    UtAssert_True(CAM_AppData.RunStatus == CFE_ES_APP_ERROR, "cam run status");
+    UtAssert_True(CAM_AppData.RunStatus == CFE_ES_RunStatus_APP_ERROR, "cam run status");
 }
 
 /* test init - create child task error */
@@ -94,7 +94,7 @@ static void CAM_Init_Test_ChildTaskError(void)
 {
     Ut_CFE_ES_SetReturnCode(UT_CFE_ES_CREATECHILDTASK_INDEX, CFE_ES_ERR_CHILD_TASK_CREATE, 1);
     cam_Main();
-    UtAssert_True(CAM_AppData.RunStatus == CFE_ES_APP_ERROR, "cam run status");
+    UtAssert_True(CAM_AppData.RunStatus == CFE_ES_RunStatus_APP_ERROR, "cam run status");
 }
 
 void CAM_Init_Test_AddTestCases(void)
