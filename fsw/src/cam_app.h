@@ -55,10 +55,9 @@ typedef struct
     /*
     ** Operational data (not reported in housekeeping)...
     */
-    CFE_SB_MsgPtr_t MsgPtr;     /* Pointer to msg received on software bus */
+    CFE_MSG_Message_t * MsgPtr;     /* Pointer to msg received on software bus */
     CFE_SB_PipeId_t CmdPipe;    /* Pipe Id for HK command pipe */
     uint32 RunStatus;           /* App run status for controlling the application state */
-	CAM_NoArgsCmd_t EoE;        /* End of Experiment Packet */
     CAM_Exp_tlm_t	Exp_Pkt;    /* Experiment Packet */
 	
 	/*
@@ -97,6 +96,6 @@ void  CAM_ResetCounters(void);
 /* 
 ** This function is provided as an example of verifying the size of the command
 */
-boolean CAM_VerifyCmdLength(CFE_SB_MsgPtr_t msg, uint16 ExpectedLength);
+bool CAM_VerifyCmdLength(CFE_MSG_Message_t * msg, uint16 ExpectedLength);
 
 #endif 
