@@ -5,7 +5,7 @@ limited to, any warranty that the software will conform to, specifications any i
 for a particular purpose, and freedom from infringement, and any warranty that the documentation will conform to the program, or
 any warranty that the software will be error free.
 
-In no event shall NASA be liable for any dacames, including, but not limited to direct, indirect, special or consequential dacames,
+In no event shall NASA be liable for any damages, including, but not limited to direct, indirect, special or consequential damages,
 arising out of, resulting from, or in any way connected with the software or its documentation.  Whether or not based upon warranty,
 contract, tort or otherwise, and whether or not loss was sustained from, or arose out of the results of, or use of, the software,
 documentation or services provided hereunder
@@ -15,13 +15,17 @@ NASA IV&V
 ivv-itc@lists.nasa.gov
 */
 
-#ifndef _cam_lib_h_
-#define _cam_lib_h_
+#ifndef _cam_device_h_
+#define _cam_device_h_
 
-/************************************************************************
-** Includes
-*************************************************************************/
 #include "cfe.h"
+#include "cam_app.h"
+#include "cam_perfids.h"
+#include "cam_msgids.h"
+#include "cam_msg.h"
+#include "cam_events.h"
+#include "cam_version.h"
+#include "cam_platform_cfg.h"
 
 /************************************************************************
 ** Debug Definitions
@@ -36,7 +40,7 @@ ivv-itc@lists.nasa.gov
 #define CAM_SPEED               1000000
 #define CAP_DONE_MASK           0x08
 #define CAM_TIMEOUT             100
-#define CAM_DATA_SIZE           1010
+//#define CAM_DATA_SIZE           1010
 
 // Select Hardware (only 1)
     //#define OV2640
@@ -102,4 +106,23 @@ extern int32 CAM_read_fifo_length(uint32* length);
 extern int32 CAM_read_prep(char* buf, uint16* i);
 extern int32 CAM_read(char* buf, uint16* i, uint8* status);
 
-#endif 
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* CAM child task global function prototypes                       */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+int32 CAM_ChildInit(void);
+void  CAM_ChildTask(void);
+int32 CAM_publish(void);
+int32 CAM_state(void);
+int32 CAM_fifo(uint16*, uint8*);
+int32 CAM_exp(void); 
+
+#endif /* _cam_device_h_ */
+
+/************************/
+/*  End of File Comment */
+/************************/
+

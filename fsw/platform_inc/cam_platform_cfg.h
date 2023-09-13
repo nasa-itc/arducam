@@ -44,7 +44,7 @@ ivv-itc@lists.nasa.gov
 #define CAM_SEM_NAME                        "CAM_SEM"
 
 /****************************************************/
-/* Sensor related definition 												*/
+/* Sensor related definition 						*/
 /****************************************************/
 #define BMP 	0
 #define JPEG	1
@@ -60,7 +60,7 @@ ivv-itc@lists.nasa.gov
 #define OV2640_1600x1200	8	//1600x1200
 
 /****************************************************/
-/* ArduChip related definition 											*/
+/* ArduChip related definition 						*/
 /****************************************************/
 #define ARDUCHIP_MODE      		0x02  //Mode register
 
