@@ -1,13 +1,13 @@
 cmake_minimum_required(VERSION 2.6.4)
 project(CFS_ARDUCAM C)
 
-include(../ComponentSettings.cmake)
+include(../../ComponentSettings.cmake)
 
-include_directories(fsw/mission_inc)
-include_directories(fsw/platform_inc)
+include_directories(mission_inc)
+include_directories(platform_inc)
 
 include_directories(${hwlib_MISSION_DIR}/fsw/public_inc)
-aux_source_directory(fsw/src APP_SRC_FILES)
+aux_source_directory(src APP_SRC_FILES)
 
 # Create the app module
 add_cfe_app(arducam ${APP_SRC_FILES})
@@ -23,5 +23,5 @@ else ()
 endif (HWIL)
 
 # Unit Tests
-aux_source_directory(fsw/unit_test UT_SRC_FILES)
+aux_source_directory(unit_test UT_SRC_FILES)
 #add_mission_unit_test(test_cam ${UT_SRC_FILES} ${APP_SRC_FILES} LINK_HWLIB)
