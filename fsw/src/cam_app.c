@@ -544,7 +544,7 @@ bool CAM_VerifyCmdLength(CFE_MSG_Message_t * msg, uint16 ExpectedLength)
         CFE_MSG_GetFcnCode(msg, &CommandCode);
 
         CFE_EVS_SendEvent(CAM_LEN_ERR_EID, CFE_EVS_EventType_ERROR,
-           "Invalid msg length: ID = 0x%X CC = %d Len = %d Expected = %d",
+           "Invalid msg length: ID = 0x%X CC = %d Len = %ld Expected = %d",
               CFE_SB_MsgIdToValue(MessageID), CommandCode, ActualLength, ExpectedLength);
 
         result = false;
