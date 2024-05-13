@@ -855,36 +855,6 @@ static struct sensor_reg OV5640_QSXGA2UXGA[] =
     {0xFFFF, 0xFF},
 };
 
-static struct sensor_reg OV5640_5MP_JPEG[] =
-{	//5MP
-    {0x3800 ,0x00},                            
-    {0x3801 ,0x00},                                                            
-    {0x3802 ,0x00},                            
-    {0x3803 ,0x00},   
-    {0x3804 ,0xA },           
-    {0x3805 ,0x3f},          
-    {0x3806 ,0x7 },          
-    {0x3807 ,0x9f},          
-    {0x3808 ,0xA },                               
-    {0x3809 ,0x20},  
-    {0x380a ,0x7 },           
-    {0x380b ,0x98}, 
-    {0x380c ,0xc },                        
-    {0x380d ,0x80},                      
-    {0x380e ,0x7 }, 
-    {0x380f ,0xd0}, 
-    {0x5001 ,0xa3}, 
-    {0x5680 ,0x0 }, 
-    {0x5681 ,0x0 }, 
-    {0x5682 ,0xA }, 
-    {0x5683 ,0x20}, 
-    {0x5684 ,0x0 }, 
-    {0x5685 ,0x0 }, 
-    {0x5686 ,0x7 }, 
-    {0x5687 ,0x98}, 	
-    {0xFFFF, 0xFF},	
-};
-
 #endif
 
 #ifdef OV5642
@@ -1984,7 +1954,6 @@ int32 CAM_config(void)
 {
     uint8_t  data[3];
     int32 result = OS_ERROR;
-    uint16_t spir = 0x0000;
 
     // Select chip
     result = spi_select_chip(&CAM_SPI);
@@ -2092,10 +2061,10 @@ int32 CAM_jpeg(void)
 int32 CAM_setup(void)
 {
     int32 result = OS_SUCCESS;
-    uint8_t data[2];
 
     #ifdef OV2640
     // Change register set to camera
+    uint8_t data[2];
     data[0] = 0xFF; 
     data[1] = 0x01;
     i2c_master_transaction(&CAM_I2C, CAM_ADDR, &data, 2, NULL, 0, CAM_TIMEOUT);
