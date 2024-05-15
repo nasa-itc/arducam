@@ -18,7 +18,7 @@ ivv-itc@lists.nasa.gov
 #ifndef _CAM_MSG_H_
 #define _CAM_MSG_H_
 
-#include "cam_lib.h"
+#include "cam_device.h"
 #include "cfe_sb.h"
 
 /*
@@ -65,6 +65,8 @@ ivv-itc@lists.nasa.gov
 #define CAM_HWLIB_READ_PREP_CC      30
 #define CAM_HWLIB_READ_CC           31
 #define CAM_PUBLISH_CC              32
+
+#define CAM_DATA_SIZE               1010 //Necessary to avoid compiler errors
 
 /*
 ** CAM no argument command
