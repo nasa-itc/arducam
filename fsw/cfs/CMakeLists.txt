@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.6.4)
 project(CFS_ARDUCAM C)
 
-include(../../ComponentSettings.cmake)
+include(../../../ComponentSettings.cmake)
 
 include_directories(mission_inc)
 include_directories(platform_inc)
