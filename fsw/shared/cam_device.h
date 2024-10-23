@@ -18,14 +18,8 @@ ivv-itc@lists.nasa.gov
 #ifndef _cam_device_h_
 #define _cam_device_h_
 
-#include "cfe.h"
-#include "cam_app.h"
-#include "cam_perfids.h"
-#include "cam_msgids.h"
-#include "cam_msg.h"
-#include "cam_events.h"
-#include "cam_version.h"
-#include "cam_platform_cfg.h"
+#include "device_cfg.h"
+#include "hwlib.h"
 
 /************************************************************************
 ** Debug Definitions
@@ -90,21 +84,21 @@ struct sensor_reg {
 /*************************************************************************
 ** Exported Functions
 *************************************************************************/
-extern int32 CAM_LibInit(void);
-extern int32 CAM_init_i2c(void);
-extern int32 CAM_init_spi(void);
-extern int32 CAM_config(void);
-extern int32 CAM_jpeg_init(void);
-extern int32 CAM_yuv422(void);
-extern int32 CAM_jpeg(void);
-extern int32 CAM_jpeg_320x240(void);
-extern int32 CAM_setup(void);
-extern int32 CAM_setSize(uint8_t size);
-extern int32 CAM_capture_prep(void);
-extern int32 CAM_capture(void);
-extern int32 CAM_read_fifo_length(uint32* length);
-extern int32 CAM_read_prep(char* buf, uint16* i);
-extern int32 CAM_read(char* buf, uint16* i, uint8* status);
+extern int32_t CAM_LibInit(void);
+extern int32_t CAM_init_i2c(void);
+extern int32_t CAM_init_spi(void);
+extern int32_t CAM_config(void);
+extern int32_t CAM_jpeg_init(void);
+extern int32_t CAM_yuv422(void);
+extern int32_t CAM_jpeg(void);
+extern int32_t CAM_jpeg_320x240(void);
+extern int32_t CAM_setup(void);
+extern int32_t CAM_setSize(uint8_t size);
+extern int32_t CAM_capture_prep(void);
+extern int32_t CAM_capture(void);
+extern int32_t CAM_read_fifo_length(uint32_t* length);
+extern int32_t CAM_read_prep(char* buf, uint16_t* i);
+extern int32_t CAM_read(char* buf, uint16_t* i, uint8_t* status);
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -113,12 +107,12 @@ extern int32 CAM_read(char* buf, uint16* i, uint8* status);
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-int32 CAM_ChildInit(void);
-void  CAM_ChildTask(void);
-int32 CAM_publish(void);
-int32 CAM_state(void);
-int32 CAM_fifo(uint16*, uint8*);
-int32 CAM_exp(void); 
+int32_t CAM_ChildInit(void);
+void    CAM_ChildTask(void);
+int32_t CAM_publish(void);
+int32_t CAM_state(void);
+int32_t CAM_fifo(uint16_t*, uint8_t*);
+int32_t CAM_exp(void); 
 
 #endif /* _cam_device_h_ */
 

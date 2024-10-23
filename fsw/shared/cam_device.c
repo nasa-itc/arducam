@@ -1779,9 +1779,9 @@ static struct sensor_reg ov5642_dvp_fmt_global_init[] =
 ** Private Function Prototypes
 *******************************************************************************/
 #ifdef OV5642
-static int32 CAM_setSize_OV5642(void);
+static int32_t CAM_setSize_OV5642(void);
 #endif
-static int32 arducam_i2c_write_regs(struct sensor_reg*);
+static int32_t arducam_i2c_write_regs(struct sensor_reg*);
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -1789,7 +1789,7 @@ static int32 arducam_i2c_write_regs(struct sensor_reg*);
 /* cFE requires that a library have an initialization routine      */ 
 /*                                                                 */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-int32 CAM_LibInit(void)
+int32_t CAM_LibInit(void)
 {
     #ifdef STF1_DEBUG
         CFE_EVS_SendEvent(HWLIB_INIT_EID, CFE_EVS_EventType_DEBUG, "CAM_LibInit(): Initializing the CAM HW");
@@ -1798,10 +1798,10 @@ int32 CAM_LibInit(void)
     return OS_SUCCESS;
 }
 
-int32 CAM_init_i2c(void)
+int32_t CAM_init_i2c(void)
 {
     uint8_t  data[3];
-    int32 result = OS_ERROR;
+    int32_t result = OS_ERROR;
     uint8_t  temp = 0;
     uint8_t  vid, pid;
 
@@ -1864,10 +1864,10 @@ int32 CAM_init_i2c(void)
     return result;
 }
 
-int32 CAM_init_spi(void)
+int32_t CAM_init_spi(void)
 {
-    int32 result = OS_SUCCESS;
-    int32 state = OS_SUCCESS;
+    int32_t result = OS_SUCCESS;
+    int32_t state = OS_SUCCESS;
     uint8_t spir[2]   = {0x00, 0x00};
     uint8_t temp[2]   = {0x00, 0x00};
     uint8_t writereg[2]   = {0x80, 0x55};
@@ -1950,10 +1950,10 @@ int32 CAM_init_spi(void)
     return state;
 }
 
-int32 CAM_config(void)
+int32_t CAM_config(void)
 {
     uint8_t  data[3];
-    int32 result = OS_ERROR;
+    int32_t result = OS_ERROR;
 
     // Select chip
     result = spi_select_chip(&CAM_SPI);
@@ -2005,9 +2005,9 @@ int32 CAM_config(void)
     return result;
 }
 
-int32 CAM_jpeg_init(void)
+int32_t CAM_jpeg_init(void)
 {
-    int32 result = OS_SUCCESS;
+    int32_t result = OS_SUCCESS;
     #ifdef OV2640
     result = arducam_i2c_write_regs(OV2640_JPEG_INIT);
     #endif
@@ -2021,9 +2021,9 @@ int32 CAM_jpeg_init(void)
     return result;
 }
 
-int32 CAM_yuv422(void)
+int32_t CAM_yuv422(void)
 {
-    int32 result = OS_SUCCESS;
+    int32_t result = OS_SUCCESS;
     #ifdef OV2640
     result = arducam_i2c_write_regs(OV2640_YUV422);
     #endif
@@ -2036,9 +2036,9 @@ int32 CAM_yuv422(void)
     return result;
 }
 
-int32 CAM_jpeg(void)
+int32_t CAM_jpeg(void)
 {
-    int32 result = OS_SUCCESS;
+    int32_t result = OS_SUCCESS;
     uint8_t  data[3];
 
     #ifdef OV2640
@@ -2058,9 +2058,9 @@ int32 CAM_jpeg(void)
     return result;
 }
 
-int32 CAM_setup(void)
+int32_t CAM_setup(void)
 {
-    int32 result = OS_SUCCESS;
+    int32_t result = OS_SUCCESS;
 
     #ifdef OV2640
     // Change register set to camera
@@ -2077,9 +2077,9 @@ int32 CAM_setup(void)
     return result;
 }
 
-int32 CAM_jpeg_320x240(void)
+int32_t CAM_jpeg_320x240(void)
 {
-    int32 result = OS_SUCCESS;
+    int32_t result = OS_SUCCESS;
     #ifdef OV2640
     result = arducam_i2c_write_regs(OV2640_320x240_JPEG);
     #endif
@@ -2093,9 +2093,9 @@ int32 CAM_jpeg_320x240(void)
     return result;
 }
 
-int32 CAM_setSize(uint8_t size)
+int32_t CAM_setSize(uint8_t size)
 {
-    int32 result = OS_ERROR;
+    int32_t result = OS_ERROR;
     
     switch (size)
     {
@@ -2151,9 +2151,9 @@ int32 CAM_setSize(uint8_t size)
 }
 
 #ifdef OV5642
-static int32 CAM_setSize_OV5642(void)
+static int32_t CAM_setSize_OV5642(void)
 {
-    int32 result = OS_SUCCESS;
+    int32_t result = OS_SUCCESS;
     uint8_t  data[3];
 
     data[0] = 0x38; 
@@ -2173,9 +2173,9 @@ static int32 CAM_setSize_OV5642(void)
 }
 #endif
 
-int32 CAM_capture_prep(void)
+int32_t CAM_capture_prep(void)
 {
-    int32 result = OS_ERROR;
+    int32_t result = OS_ERROR;
     uint8_t data[2];
 
     // Select chip
@@ -2217,11 +2217,11 @@ int32 CAM_capture_prep(void)
     return result;
 }
 
-int32 CAM_capture(void)
+int32_t CAM_capture(void)
 {   
     uint8_t temp[2] = {0x00, 0x00};
-    int32 result = OS_SUCCESS;
-    int32 state  = OS_SUCCESS;
+    int32_t result = OS_SUCCESS;
+    int32_t state  = OS_SUCCESS;
     uint16_t count = 0x0000;
     uint8_t data[2];
     
@@ -2262,10 +2262,10 @@ int32 CAM_capture(void)
     return state;
 }
 
-int32 CAM_read_fifo_length(uint32* length)
+int32_t CAM_read_fifo_length(uint32_t* length)
 {
-    int32 result = OS_SUCCESS;
-    int32 state = OS_SUCCESS;
+    int32_t result = OS_SUCCESS;
+    int32_t state = OS_SUCCESS;
     uint8_t temp[2] = {0x55, 0x55};
     uint8_t data[2];
 
@@ -2319,12 +2319,12 @@ int32 CAM_read_fifo_length(uint32* length)
     return state; 
 }
 
-int32 CAM_read_prep(char* buf, uint16* i)
+int32_t CAM_read_prep(char* buf, uint16* i)
 {
     // Local variables
     uint8_t temp[2] = {0x00, 0x00};
-    int32 result = OS_SUCCESS;
-    int32 state  = OS_SUCCESS;
+    int32_t result = OS_SUCCESS;
+    int32_t state  = OS_SUCCESS;
     uint16_t count = 0x0000;
     uint8_t data[2] = { 0x00, 0x00};
     
@@ -2375,12 +2375,12 @@ int32 CAM_read_prep(char* buf, uint16* i)
     return state;
 }
 
-int32 CAM_read(char* buf, uint16* i, uint8* status)
+int32_t CAM_read(char* buf, uint16* i, uint8* status)
 {    
     // Local variables
     uint8_t temp[2] = { 0x00, 0x00};
     uint8_t temp_last[2] = { 0x00, 0xFF};
-    int32 result = OS_SUCCESS;
+    int32_t result = OS_SUCCESS;
     uint8_t spiw[2] = { 0x3D, 0x00}; // FIFO read
     
     #ifdef FILE_OUTPUT
@@ -2493,9 +2493,9 @@ int32 CAM_read(char* buf, uint16* i, uint8* status)
     return result;
 }
 
-static int32 arducam_i2c_write_regs(struct sensor_reg reglist[])
+static int32_t arducam_i2c_write_regs(struct sensor_reg reglist[])
 {   
-    int32 result = OS_SUCCESS;
+    int32_t result = OS_SUCCESS;
     struct sensor_reg *next = reglist;
     #ifdef OV2640
     uint8 test[2];
@@ -2503,7 +2503,7 @@ static int32 arducam_i2c_write_regs(struct sensor_reg reglist[])
     #if (defined(OV5640) || defined(OV5642))
     uint8 test[3];
     #endif
-    int32 errors = 0;
+    int32_t errors = 0;
 
     #ifdef OV2640
     while ((next->reg != 0xFF) || (next->val != 0xFF))
@@ -2580,9 +2580,9 @@ static int32 arducam_i2c_write_regs(struct sensor_reg reglist[])
 /*                                                            
 ** CAM Child Task Startup Initialization                       
 */
-int32 CAM_ChildInit(void)
+int32_t CAM_ChildInit(void)
 {
-    int32 result;
+    int32_t result;
     
     /* Create child task (low priority command handler) */
     result = CFE_ES_CreateChildTask(&CAM_AppData.ChildTaskID,
@@ -2607,7 +2607,7 @@ int32 CAM_ChildInit(void)
 **  Purpose:                                                                  
 ** 		   Break apart functionality, publish received data.
 */
-int32 CAM_publish(void)
+int32_t CAM_publish(void)
 {
     OS_MutSemTake(CAM_AppData.data_mutex);
         CAM_AppData.Exp_Pkt.msg_count++;
@@ -2625,10 +2625,10 @@ int32 CAM_publish(void)
 ** 		   	Checks the state of the experiment
 **			Holds on pause and quits on stop
 */
-int32 CAM_state(void)
+int32_t CAM_state(void)
 {
-    int32 result = OS_ERROR;
-    uint32 state;
+    int32_t result = OS_ERROR;
+    uint32_t state;
 
     OS_MutSemTake(CAM_AppData.data_mutex);
         state = CAM_AppData.State;
@@ -2676,9 +2676,9 @@ int32 CAM_state(void)
 **  Purpose:                                                                  
 ** 		   Read the camera FIFO until commanded to stop, complete, or error occurs.
 */
-int32 CAM_fifo(uint16* x, uint8* status)
+int32_t CAM_fifo(uint16* x, uint8* status)
 {   
-    int32 result = OS_SUCCESS;
+    int32_t result = OS_SUCCESS;
 
     while( (*status > 0) && (*status <= 8) && (CAM_AppData.Exp_Pkt.msg_count < ((CAM_AppData.Exp_Pkt.length / CAM_DATA_SIZE) + 1) ) )
     // Status is used to track key points such as start and end of the image
@@ -2730,9 +2730,9 @@ int32 CAM_fifo(uint16* x, uint8* status)
 ** 		   The experiment runs until the parent dies or is commanded to stop by the parent
 ** 		   but has the ability to be paused and resumed depending on the current state.
 */
-int32 CAM_exp(void)
+int32_t CAM_exp(void)
 {
-    int32  result = OS_ERROR;
+    int32_t  result = OS_ERROR;
     uint8  status = 1;
     uint16 x      = 0;
 
@@ -2892,8 +2892,8 @@ int32 CAM_exp(void)
 */
 void CAM_ChildTask(void)
 {
-    int32  result;
-    int32  state;
+    int32_t  result;
+    int32_t  state;
 
     CFE_EVS_SendEvent(CAM_CHILD_INIT_EID, CFE_EVS_EventType_INFORMATION, "CAM child task initialization complete");
 

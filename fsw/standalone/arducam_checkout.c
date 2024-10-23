@@ -33,7 +33,7 @@ void print_help(void)
         "  n                                - ^                               \n"
         "hk                                 - Request device housekeeping     \n"
         "  h                                - ^                               \n"
-        "arducam                             - Request arducam data             \n"
+        "arducam                            - Request arducam data            \n"
         "  s                                - ^                               \n"
         "cfg #                              - Send configuration #            \n"
         "  c #                              - ^                               \n"

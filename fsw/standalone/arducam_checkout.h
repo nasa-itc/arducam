@@ -25,7 +25,7 @@
 
 #include "hwlib.h"
 #include "device_cfg.h"
-#include "arducam_device.h"
+#include "cam_device.h"
 
 
 /*

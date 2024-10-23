@@ -25,8 +25,8 @@ endif()
 include_directories("./")
 include_directories("../fsw/platform_inc")
 include_directories("../fsw/src")
-include_directories("../fsw/shared")
-include_directories("../../../fsw/apps/hwlib/fsw/public_inc")
+include_directories("../shared")
+include_directories("../../../../fsw/apps/hwlib/fsw/public_inc")
 
 set(arducam_checkout_src
   arducam_checkout.c 
@@ -34,7 +34,7 @@ set(arducam_checkout_src
 )
 
 if(${TGTNAME} STREQUAL cpu1)
-  include_directories("../../../fsw/apps/hwlib/sim/inc")
+  include_directories("../../../../fsw/apps/hwlib/sim/inc")
   set(arducam_checkout_src 
     ${arducam_checkout_src}
     ../../../../fsw/apps/hwlib/sim/src/libi2c.c
