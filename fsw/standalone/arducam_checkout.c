@@ -12,14 +12,6 @@
 */
 #include "arducam_checkout.h"
 
-
-/*
-** Global Variables
-*/
-uart_info_t ArducamUart;
-ARDUCAM_Device_HK_tlm_t ArducamHK;
-ARDUCAM_Device_Data_tlm_t ArducamData;
-
 /*
 ** Component Functions
 */
@@ -29,14 +21,15 @@ void print_help(void)
         "---------------------------------------------------------------------\n"
         "help                               - Display help                    \n"
         "exit                               - Exit app                        \n"
+        "i2c                                - Initialize I2C                  \n"
+        "  i                                - ^                               \n"
+        "spi                                - Initialize SPI                  \n"
+        "  s                                - ^                               \n"
         "noop                               - No operation command to device  \n"
         "  n                                - ^                               \n"
-        "hk                                 - Request device housekeeping     \n"
-        "  h                                - ^                               \n"
-        "arducam                            - Request arducam data            \n"
-        "  s                                - ^                               \n"
-        "cfg #                              - Send configuration #            \n"
-        "  c #                              - ^                               \n"
+        "small                              - Request small image             \n"
+        "medium                             - Request medium image            \n"
+        "large                              - Request large image             \n"
         "\n"
     );
 }
@@ -59,6 +52,22 @@ int get_command(const char* str)
     {
         status = CMD_EXIT;
     }
+    else if(strcmp(lcmd, "i2c") == 0) 
+    {
+        status = CMD_I2C;
+    }
+    else if(strcmp(lcmd, "i") == 0) 
+    {
+        status = CMD_I2C;
+    }
+    else if(strcmp(lcmd, "spi") == 0) 
+    {
+        status = CMD_SPI;
+    }
+    else if(strcmp(lcmd, "s") == 0) 
+    {
+        status = CMD_SPI;
+    }
     else if(strcmp(lcmd, "noop") == 0) 
     {
         status = CMD_NOOP;
@@ -67,31 +76,94 @@ int get_command(const char* str)
     {
         status = CMD_NOOP;
     }
-    else if(strcmp(lcmd, "hk") == 0) 
+    else if(strcmp(lcmd, "small") == 0) 
     {
-        status = CMD_HK;
+        status = CMD_SMALL;
     }
-    else if(strcmp(lcmd, "h") == 0) 
+    else if(strcmp(lcmd, "medium") == 0) 
     {
-        status = CMD_HK;
+        status = CMD_MEDIUM;
     }
-    else if(strcmp(lcmd, "arducam") == 0) 
+    else if(strcmp(lcmd, "large") == 0) 
     {
-        status = CMD_ARDUCAM;
-    }
-    else if(strcmp(lcmd, "s") == 0) 
-    {
-        status = CMD_ARDUCAM;
-    }
-    else if(strcmp(lcmd, "cfg") == 0) 
-    {
-        status = CMD_CFG;
-    }
-    else if(strcmp(lcmd, "c") == 0) 
-    {
-        status = CMD_CFG;
+        status = CMD_LARGE;
     }
     return status;
+}
+
+int take_picture(uint8_t size)
+{
+    int32_t status = OS_SUCCESS;
+    uint32_t length = 0;
+    uint8_t data[CAM_DATA_SIZE];
+    uint16_t x = 0;
+
+    // Initialize Inter-Integrated Circuit
+    status = CAM_init_i2c();
+    if (status != OS_SUCCESS) return OS_ERROR;
+    OS_printf("I2C initialization success\n");
+
+    // Initialize Serial Peripheral Interface
+    status = CAM_init_spi();
+    if (status != OS_SUCCESS) return OS_ERROR;
+    OS_printf("SPI initialization success\n");
+
+    // Configure Camera for Upload
+    status = CAM_config();
+    if (status != OS_SUCCESS) return OS_ERROR;
+    OS_printf("Configuration success\n");
+
+    // Configure Registers
+    status = CAM_jpeg_init();
+    if (status != OS_SUCCESS) return OS_ERROR;
+    OS_printf("JPEG init success\n");
+
+    // Configure Registers
+    status = CAM_yuv422();
+    if (status != OS_SUCCESS) return OS_ERROR;
+    OS_printf("YUV422 success\n");
+
+    // Configure Registers
+    status = CAM_jpeg();
+    if (status != OS_SUCCESS) return OS_ERROR;
+    OS_printf("JPEG success\n");
+
+    // Configure Camera for Size
+    status = CAM_setup();
+    if (status != OS_SUCCESS) return OS_ERROR;
+    OS_printf("Configuration success\n");
+
+    // Upload Size
+    status = CAM_setSize(size);
+    if (status != OS_SUCCESS) return OS_ERROR;
+    OS_printf("Set size success\n");
+
+    // Prepare for Capture
+    status = CAM_capture_prep();
+    if (status != OS_SUCCESS) return OS_ERROR;
+    OS_printf("Capture prep success\n");
+
+    // Capture Image
+    status = CAM_capture();
+    if (status != OS_SUCCESS) return OS_ERROR;
+    OS_printf("Capture success\n");
+
+    // Read FIFO Size
+    status = CAM_read_fifo_length(&length);
+    if (status != OS_SUCCESS) return OS_ERROR;
+    OS_printf("Read fifo length success\n");
+
+    // Prepare for FIFO Read
+    status = CAM_read_prep((char*) &data, (uint16_t*) &x);
+    if (status != OS_SUCCESS) return OS_ERROR;
+    OS_printf("Read prep success\n");
+
+    //// Read FIFO
+    //status = CAM_fifo((uint16*) &x, (uint8*) &status);
+    //if (status != OS_SUCCESS) return OS_ERROR;
+    //OS_printf("FIFO success\n");
+
+    return OS_SUCCESS;
 }
 
 
@@ -99,7 +171,6 @@ int process_command(int cc, int num_tokens, char tokens[MAX_INPUT_TOKENS][MAX_IN
 {
     int32_t status = OS_SUCCESS;
     int32_t exit_status = OS_SUCCESS;
-    uint32_t config;
 
     /* Process command */
     switch(cc) 
@@ -112,63 +183,101 @@ int process_command(int cc, int num_tokens, char tokens[MAX_INPUT_TOKENS][MAX_IN
             exit_status = OS_ERROR;
             break;
 
+        case CMD_I2C:
+            if (check_number_arguments(num_tokens, 0) == OS_SUCCESS)
+            {
+                status = CAM_init_i2c();
+                if (status == OS_SUCCESS)
+                {
+                    OS_printf("I2C initialization success\n");
+                }
+                else
+                {
+                    OS_printf("I2C initialization failed!\n");
+                }
+            }
+            break;
+
+        case CMD_SPI:
+            status = CAM_init_spi();
+            if (check_number_arguments(num_tokens, 0) == OS_SUCCESS)
+            {
+                status = CAM_init_spi();
+                if (status == OS_SUCCESS)
+                {
+                    OS_printf("SPI initialization success\n");
+                }
+                else
+                {
+                    OS_printf("SPI initialization failed!\n");
+                }
+            }
+            break;
+
         case CMD_NOOP:
             if (check_number_arguments(num_tokens, 0) == OS_SUCCESS)
             {
-                status = ARDUCAM_CommandDevice(&ArducamUart, ARDUCAM_DEVICE_NOOP_CMD, 0);
-                if (status == OS_SUCCESS)
+                status = CAM_init_i2c();
+                if (status != OS_SUCCESS)
                 {
-                    OS_printf("NOOP command success\n");
+                    OS_printf("I2C failure!\n");
                 }
                 else
                 {
-                    OS_printf("NOOP command failed!\n");
+                    status = CAM_init_spi();
+                    if (status != OS_SUCCESS)
+                    {
+                        OS_printf("SPI failure!\n");
+                    }
+                    else
+                    {
+                        OS_printf("CAM hardware NOOP (I2C and SPI) successful\n");
+                    }
                 }
             }
             break;
-
-        case CMD_HK:
+        
+        case CMD_SMALL:
             if (check_number_arguments(num_tokens, 0) == OS_SUCCESS)
             {
-                status = ARDUCAM_RequestHK(&ArducamUart, &ArducamHK);
+                status = take_picture(size_320x240);
                 if (status == OS_SUCCESS)
                 {
-                    OS_printf("ARDUCAM_RequestHK command success\n");
+                    OS_printf("Take small picture success\n");
                 }
                 else
                 {
-                    OS_printf("ARDUCAM_RequestHK command failed!\n");
+                    OS_printf("Take small picture failed!\n");
                 }
             }
             break;
-
-        case CMD_ARDUCAM:
+        
+        case CMD_MEDIUM:
             if (check_number_arguments(num_tokens, 0) == OS_SUCCESS)
             {
-                status = ARDUCAM_RequestData(&ArducamUart, &ArducamData);
+                status = take_picture(size_1600x1200);
                 if (status == OS_SUCCESS)
                 {
-                    OS_printf("ARDUCAM_RequestData command success\n");
+                    OS_printf("Take small picture success\n");
                 }
                 else
                 {
-                    OS_printf("ARDUCAM_RequestData command failed!\n");
+                    OS_printf("Take small picture failed!\n");
                 }
             }
             break;
 
-        case CMD_CFG:
-            if (check_number_arguments(num_tokens, 1) == OS_SUCCESS)
+        case CMD_LARGE:
+            if (check_number_arguments(num_tokens, 0) == OS_SUCCESS)
             {
-                config = atoi(tokens[0]);
-                status = ARDUCAM_CommandDevice(&ArducamUart, ARDUCAM_DEVICE_CFG_CMD, config);
+                status = take_picture(size_2592x1944);
                 if (status == OS_SUCCESS)
                 {
-                    OS_printf("Configuration command success with value %u\n", config);
+                    OS_printf("Take small picture success\n");
                 }
                 else
                 {
-                    OS_printf("Configuration command failed!\n");
+                    OS_printf("Take small picture failed!\n");
                 }
             }
             break;
@@ -183,29 +292,12 @@ int process_command(int cc, int num_tokens, char tokens[MAX_INPUT_TOKENS][MAX_IN
 
 int main(int argc, char *argv[]) 
 {
-    int status = OS_SUCCESS;
     char input_buf[MAX_INPUT_BUF];
     char input_tokens[MAX_INPUT_TOKENS][MAX_INPUT_TOKEN_SIZE];
     int num_input_tokens;
     int cmd;    
     char* token_ptr;
     uint8_t run_status = OS_SUCCESS;
-
-    /* Open device specific protocols */
-    ArducamUart.deviceString = ARDUCAM_CFG_STRING;
-    ArducamUart.handle = ARDUCAM_CFG_HANDLE;
-    ArducamUart.isOpen = PORT_CLOSED;
-    ArducamUart.baud = ARDUCAM_CFG_BAUDRATE_HZ;
-    status = uart_init_port(&ArducamUart);
-    if (status == OS_SUCCESS)
-    {
-        printf("UART device %s configured with baudrate %d \n", ArducamUart.deviceString, ArducamUart.baud);
-    }
-    else
-    {
-        printf("UART device %s failed to initialize! \n", ArducamUart.deviceString);
-        run_status = OS_ERROR;
-    }
 
     /* Main loop */
     print_help();
@@ -244,7 +336,8 @@ int main(int argc, char *argv[])
     }
 
     // Close the device 
-    uart_close_port(&ArducamUart);
+    i2c_master_close(&CAM_I2C);
+    spi_close_device(&CAM_SPI);
 
     OS_printf("Cleanly exiting arducam application...\n\n"); 
     return 1;

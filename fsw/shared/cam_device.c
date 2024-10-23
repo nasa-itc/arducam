@@ -26,8 +26,6 @@ ivv-itc@lists.nasa.gov
 /*************************************************************************
 ** Includes
 *************************************************************************/
-#include "osapi.h"
-#include "hwlib.h"
 #include "cam_device.h"
 
 /*************************************************************************
@@ -438,7 +436,7 @@ int32_t CAM_read_fifo_length(uint32_t* length)
     return state; 
 }
 
-int32_t CAM_read_prep(char* buf, uint16* i)
+int32_t CAM_read_prep(char* buf, uint16_t* i)
 {
     // Local variables
     uint8_t temp[2] = {0x00, 0x00};
@@ -494,7 +492,7 @@ int32_t CAM_read_prep(char* buf, uint16* i)
     return state;
 }
 
-int32_t CAM_read(char* buf, uint16* i, uint8* status)
+int32_t CAM_read(char* buf, uint16_t* i, uint8_t* status)
 {    
     // Local variables
     uint8_t temp[2] = { 0x00, 0x00};

@@ -1884,10 +1884,10 @@ static int32_t arducam_i2c_write_regs(struct sensor_reg reglist[])
     int32_t result = OS_SUCCESS;
     struct sensor_reg *next = reglist;
     #ifdef OV2640
-    uint8 test[2];
+    uint8_t test[2];
     #endif
     #if (defined(OV5640) || defined(OV5642))
-    uint8 test[3];
+    uint8_t test[3];
     #endif
     int32_t errors = 0;
 

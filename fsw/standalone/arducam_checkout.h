@@ -26,7 +26,7 @@
 #include "hwlib.h"
 #include "device_cfg.h"
 #include "cam_device.h"
-
+#include "cam_registers.h"
 
 /*
 ** Standard Defines
@@ -37,24 +37,26 @@
 #define MAX_INPUT_TOKEN_SIZE  	50
 #define TELEM_BUF_LEN           8
 
-
 /*
 ** Command Defines
 */
 #define CMD_UNKNOWN -1
 #define CMD_HELP     0
 #define CMD_EXIT     1
-#define CMD_NOOP     2
-#define CMD_HK       3
-#define CMD_ARDUCAM   4
-#define CMD_CFG      5
-
+#define CMD_I2C      2
+#define CMD_SPI      3
+#define CMD_NOOP     4
+#define CMD_SMALL    5
+#define CMD_MEDIUM   6
+#define CMD_LARGE    7
 
 /*
 ** Prototypes
 */
 void print_help(void);
 int  get_command(const char* str);
+int  take_picture(uint8_t size);
+int  process_command(int cc, int num_tokens, char tokens[MAX_INPUT_TOKENS][MAX_INPUT_TOKEN_SIZE]);
 int  main(int argc, char *argv[]);
 
 

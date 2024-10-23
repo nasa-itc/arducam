@@ -24,22 +24,25 @@ if(${TGTNAME} STREQUAL cpu1)
 endif()
 
 include_directories("./")
-include_directories("../fsw/platform_inc")
-include_directories("../fsw/src")
+include_directories("../cfs/platform_inc")
+include_directories("../cfs/src")
 include_directories("../shared")
 include_directories("../../../../fsw/apps/hwlib/fsw/public_inc")
 
 set(arducam_checkout_src
   arducam_checkout.c 
   ../shared/cam_device.c
+  ../shared/cam_registers.c
 )
 
 if(${TGTNAME} STREQUAL cpu1)
   include_directories("../../../../fsw/apps/hwlib/sim/inc")
   set(arducam_checkout_src 
     ${arducam_checkout_src}
+    ../../../../fsw/apps/hwlib/sim/src/libcan.c 
     ../../../../fsw/apps/hwlib/sim/src/libi2c.c
     ../../../../fsw/apps/hwlib/sim/src/libspi.c
+    ../../../../fsw/apps/hwlib/sim/src/libuart.c
     ../../../../fsw/apps/hwlib/sim/src/nos_link.c
   )
   set(arducam_checkout_libs
