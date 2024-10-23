@@ -12,7 +12,9 @@ include_directories(${hwlib_MISSION_DIR}/fsw/public_inc)
 aux_source_directory(src APP_SRC_FILES)
 
 # Create the app module
-add_cfe_app(arducam ${APP_SRC_FILES} ../shared/cam_device.c)
+add_cfe_app(arducam ${APP_SRC_FILES} 
+			../shared/cam_device.c
+			../shared/cam_registers.c)
 
 # Add HWIL libraries for communication
 if (HWIL)

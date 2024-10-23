@@ -21,6 +21,7 @@ ivv-itc@lists.nasa.gov
 #include "device_cfg.h"
 #include "hwlib.h"
 #include "cam_platform_cfg.h"
+#include "cam_registers.h"
 
 /************************************************************************
 ** Debug Definitions
@@ -70,16 +71,6 @@ ivv-itc@lists.nasa.gov
 #define CAM_TIME                3
 #define CAM_LOW_VOLTAGE         4
 
-/*
-** CAM Child Task Definitions
-*/
-#define CAM_CHILD_TASK_NAME              	"CAM_CHILD_TASK"
-#define CAM_CHILD_TASK_STACK_SIZE       	2048
-#define CAM_CHILD_TASK_PRIORITY          	205
-
-#define CAM_MUTEX_NAME                      "CAM_MUTEX"
-#define CAM_SEM_NAME                        "CAM_SEM"
-
 /****************************************************/
 /* Sensor related definition 						*/
 /****************************************************/
@@ -102,12 +93,10 @@ ivv-itc@lists.nasa.gov
 #define ARDUCHIP_MODE      		0x02  //Mode register
 
 /*************************************************************************
-** Structures
+** Global Data 
 *************************************************************************/
-struct sensor_reg {
-    uint16_t reg;
-    uint16_t val;
-};
+extern i2c_bus_info_t CAM_I2C;
+extern spi_info_t CAM_SPI;
 
 /*************************************************************************
 ** Exported Functions
@@ -115,12 +104,6 @@ struct sensor_reg {
 extern int32_t CAM_init_i2c(void);
 extern int32_t CAM_init_spi(void);
 extern int32_t CAM_config(void);
-extern int32_t CAM_jpeg_init(void);
-extern int32_t CAM_yuv422(void);
-extern int32_t CAM_jpeg(void);
-extern int32_t CAM_jpeg_320x240(void);
-extern int32_t CAM_setup(void);
-extern int32_t CAM_setSize(uint8_t size);
 extern int32_t CAM_capture_prep(void);
 extern int32_t CAM_capture(void);
 extern int32_t CAM_read_fifo_length(uint32_t* length);

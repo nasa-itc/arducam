@@ -2,14 +2,22 @@
 #define _ARDUCAM_CHECKOUT_DEVICE_CFG_H_
 
 /*
-** ARDUCAM Checkout Configuration
+** Default CAM Configuration
 */
-#define ARDUCAM_CFG
-/* Note: NOS3 uart requires matching handle and bus number */
-#define ARDUCAM_CFG_STRING           "/dev/usart_16"
-#define ARDUCAM_CFG_HANDLE           16 
-#define ARDUCAM_CFG_BAUDRATE_HZ      115200
-#define ARDUCAM_CFG_MS_TIMEOUT       250
-#define ARDUCAM_CFG_DEBUG
+#define CAM_CFG
+#define CAM_I2C_BUS                         2
+#define CAM_SPEED                           1000000
+#define CAP_DONE_MASK                       0x08
+#define CAM_TIMEOUT                         100
+#define CAM_DATA_SIZE                       1010
+#define CAM_CHILD_TASK_NAME              	"CAM_CHILD_TASK"
+#define CAM_CHILD_TASK_STACK_SIZE       	2048
+#define CAM_CHILD_TASK_PRIORITY          	205
+#define CAM_MUTEX_NAME                      "CAM_MUTEX"
+#define CAM_SEM_NAME                        "CAM_SEM"
+// Select Hardware (only 1)
+//#define OV2640
+#define OV5640 
+//#define OV5642
 
 #endif /* _ARDUCAM_CHECKOUT_DEVICE_CFG_H_ */

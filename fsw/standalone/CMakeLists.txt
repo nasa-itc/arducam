@@ -1,3 +1,4 @@
+cmake_minimum_required(VERSION 3.22)
 project (arducam_checkout)
 
 if (NOT DEFINED TGTNAME)
