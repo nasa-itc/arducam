@@ -20,6 +20,7 @@ ivv-itc@lists.nasa.gov
 
 #include "device_cfg.h"
 #include "hwlib.h"
+#include "cam_platform_cfg.h"
 
 /************************************************************************
 ** Debug Definitions
@@ -30,16 +31,6 @@ ivv-itc@lists.nasa.gov
 /************************************************************************
 ** Type Definitions
 *************************************************************************/
-#define CAM_I2C_BUS             2
-#define CAM_SPEED               1000000
-#define CAP_DONE_MASK           0x08
-#define CAM_TIMEOUT             100
-//#define CAM_DATA_SIZE           1010
-
-// Select Hardware (only 1)
-    //#define OV2640
-    #define OV5640 
-    //#define OV5642
 
 // Hardware Specific Definitions
 #ifdef OV2640
@@ -73,6 +64,43 @@ ivv-itc@lists.nasa.gov
 #define size_1600x1200			3
 #define size_2592x1944          4
 
+#define CAM_RUN					0
+#define CAM_PAUSE			    1
+#define CAM_STOP			    2
+#define CAM_TIME                3
+#define CAM_LOW_VOLTAGE         4
+
+/*
+** CAM Child Task Definitions
+*/
+#define CAM_CHILD_TASK_NAME              	"CAM_CHILD_TASK"
+#define CAM_CHILD_TASK_STACK_SIZE       	2048
+#define CAM_CHILD_TASK_PRIORITY          	205
+
+#define CAM_MUTEX_NAME                      "CAM_MUTEX"
+#define CAM_SEM_NAME                        "CAM_SEM"
+
+/****************************************************/
+/* Sensor related definition 						*/
+/****************************************************/
+#define BMP 	0
+#define JPEG	1
+
+#define OV2640_160x120 		0	//160x120
+#define OV2640_176x144 		1	//176x144
+#define OV2640_320x240 		2	//320x240
+#define OV2640_352x288 		3	//352x288
+#define OV2640_640x480		4	//640x480
+#define OV2640_800x600 		5	//800x600
+#define OV2640_1024x768		6	//1024x768
+#define OV2640_1280x1024	7	//1280x1024
+#define OV2640_1600x1200	8	//1600x1200
+
+/****************************************************/
+/* ArduChip related definition 						*/
+/****************************************************/
+#define ARDUCHIP_MODE      		0x02  //Mode register
+
 /*************************************************************************
 ** Structures
 *************************************************************************/
@@ -84,7 +112,6 @@ struct sensor_reg {
 /*************************************************************************
 ** Exported Functions
 *************************************************************************/
-extern int32_t CAM_LibInit(void);
 extern int32_t CAM_init_i2c(void);
 extern int32_t CAM_init_spi(void);
 extern int32_t CAM_config(void);
@@ -100,23 +127,8 @@ extern int32_t CAM_read_fifo_length(uint32_t* length);
 extern int32_t CAM_read_prep(char* buf, uint16_t* i);
 extern int32_t CAM_read(char* buf, uint16_t* i, uint8_t* status);
 
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-/*                                                                 */
-/* CAM child task global function prototypes                       */
-/*                                                                 */
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-int32_t CAM_ChildInit(void);
-void    CAM_ChildTask(void);
-int32_t CAM_publish(void);
-int32_t CAM_state(void);
-int32_t CAM_fifo(uint16_t*, uint8_t*);
-int32_t CAM_exp(void); 
-
 #endif /* _cam_device_h_ */
 
 /************************/
 /*  End of File Comment */
 /************************/
-

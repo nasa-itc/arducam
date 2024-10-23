@@ -28,7 +28,7 @@ ivv-itc@lists.nasa.gov
 #include "cam_events.h"
 #include "cam_version.h"
 #include "cam_device.h"
-#include "cam_platform_cfg.h"
+#include "cam_child.h"
 #include "hwlib.h"
 
 /*
