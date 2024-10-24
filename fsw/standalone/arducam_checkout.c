@@ -91,6 +91,7 @@ int get_command(const char* str)
     return status;
 }
 
+/*
 int take_picture(uint8_t size)
 {
     int32_t status = OS_SUCCESS;
@@ -165,7 +166,7 @@ int take_picture(uint8_t size)
 
     return OS_SUCCESS;
 }
-
+*/
 
 int process_command(int cc, int num_tokens, char tokens[MAX_INPUT_TOKENS][MAX_INPUT_TOKEN_SIZE])
 {
@@ -238,48 +239,51 @@ int process_command(int cc, int num_tokens, char tokens[MAX_INPUT_TOKENS][MAX_IN
             break;
         
         case CMD_SMALL:
-            if (check_number_arguments(num_tokens, 0) == OS_SUCCESS)
-            {
-                status = take_picture(size_320x240);
-                if (status == OS_SUCCESS)
-                {
-                    OS_printf("Take small picture success\n");
-                }
-                else
-                {
-                    OS_printf("Take small picture failed!\n");
-                }
-            }
+            printf("Command not yet supported. \n");
+            //if (check_number_arguments(num_tokens, 0) == OS_SUCCESS)
+            //{
+            //    status = take_picture(size_320x240);
+            //    if (status == OS_SUCCESS)
+            //    {
+            //        OS_printf("Take small picture success\n");
+            //    }
+            //    else
+            //    {
+            //        OS_printf("Take small picture failed!\n");
+            //    }
+            //}
             break;
         
         case CMD_MEDIUM:
-            if (check_number_arguments(num_tokens, 0) == OS_SUCCESS)
-            {
-                status = take_picture(size_1600x1200);
-                if (status == OS_SUCCESS)
-                {
-                    OS_printf("Take small picture success\n");
-                }
-                else
-                {
-                    OS_printf("Take small picture failed!\n");
-                }
-            }
+            printf("Command not yet supported. \n");
+            //if (check_number_arguments(num_tokens, 0) == OS_SUCCESS)
+            //{
+            //    status = take_picture(size_1600x1200);
+            //    if (status == OS_SUCCESS)
+            //    {
+            //        OS_printf("Take small picture success\n");
+            //    }
+            //    else
+            //    {
+            //        OS_printf("Take small picture failed!\n");
+            //    }
+            //}
             break;
 
         case CMD_LARGE:
-            if (check_number_arguments(num_tokens, 0) == OS_SUCCESS)
-            {
-                status = take_picture(size_2592x1944);
-                if (status == OS_SUCCESS)
-                {
-                    OS_printf("Take small picture success\n");
-                }
-                else
-                {
-                    OS_printf("Take small picture failed!\n");
-                }
-            }
+            printf("Command not yet supported. \n");
+            //if (check_number_arguments(num_tokens, 0) == OS_SUCCESS)
+            //{
+            //    status = take_picture(size_2592x1944);
+            //    if (status == OS_SUCCESS)
+            //    {
+            //        OS_printf("Take small picture success\n");
+            //    }
+            //    else
+            //    {
+            //        OS_printf("Take small picture failed!\n");
+            //    }
+            //}
             break;
         
         default: 
@@ -298,6 +302,11 @@ int main(int argc, char *argv[])
     int cmd;    
     char* token_ptr;
     uint8_t run_status = OS_SUCCESS;
+
+    /* Initialize HWLIB */
+    #ifdef _NOS_ENGINE_LINK_
+        nos_init_link();
+    #endif
 
     /* Main loop */
     print_help();
@@ -335,9 +344,13 @@ int main(int argc, char *argv[])
         }
     }
 
-    // Close the device 
+    // Close the device(s)
     i2c_master_close(&CAM_I2C);
     spi_close_device(&CAM_SPI);
+
+    #ifdef _NOS_ENGINE_LINK_
+        nos_destroy_link();
+    #endif
 
     OS_printf("Cleanly exiting arducam application...\n\n"); 
     return 1;
