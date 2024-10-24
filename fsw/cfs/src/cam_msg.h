@@ -104,6 +104,7 @@ typedef struct
 {
     CFE_MSG_TelemetryHeader_t TlmHeader;
     uint8		data[CAM_DATA_SIZE];
+    uint16      spare;
     uint32		msg_count;
     uint32      length;
     
