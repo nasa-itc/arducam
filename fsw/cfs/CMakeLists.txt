@@ -1,16 +1,20 @@
-cmake_minimum_required(VERSION 2.6.4)
 project(CFS_ARDUCAM C)
 
 include(../../../ComponentSettings.cmake)
 
 include_directories(mission_inc)
 include_directories(platform_inc)
+include_directories(src)
 
+include_directories(../shared)
 include_directories(${hwlib_MISSION_DIR}/fsw/public_inc)
+
 aux_source_directory(src APP_SRC_FILES)
 
 # Create the app module
-add_cfe_app(arducam ${APP_SRC_FILES})
+add_cfe_app(arducam ${APP_SRC_FILES} 
+			../shared/cam_device.c
+			../shared/cam_registers.c)
 
 # Add HWIL libraries for communication
 if (HWIL)
