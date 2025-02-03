@@ -91,7 +91,6 @@ int get_command(const char* str)
     return status;
 }
 
-/*
 int take_picture(uint8_t size)
 {
     int32_t status = OS_SUCCESS;
@@ -160,13 +159,12 @@ int take_picture(uint8_t size)
     OS_printf("Read prep success\n");
 
     //// Read FIFO
-    //status = CAM_fifo((uint16*) &x, (uint8*) &status);
-    //if (status != OS_SUCCESS) return OS_ERROR;
-    //OS_printf("FIFO success\n");
+    status = CAM_fifo((uint16*) &x, (uint8*) &status);
+    if (status != OS_SUCCESS) return OS_ERROR;
+    OS_printf("FIFO success\n");
 
     return OS_SUCCESS;
 }
-*/
 
 int process_command(int cc, int num_tokens, char tokens[MAX_INPUT_TOKENS][MAX_INPUT_TOKEN_SIZE])
 {
@@ -239,51 +237,51 @@ int process_command(int cc, int num_tokens, char tokens[MAX_INPUT_TOKENS][MAX_IN
             break;
         
         case CMD_SMALL:
-            printf("Command not yet supported. \n");
-            //if (check_number_arguments(num_tokens, 0) == OS_SUCCESS)
-            //{
-            //    status = take_picture(size_320x240);
-            //    if (status == OS_SUCCESS)
-            //    {
-            //        OS_printf("Take small picture success\n");
-            //    }
-            //    else
-            //    {
-            //        OS_printf("Take small picture failed!\n");
-            //    }
-            //}
+            // printf("Command not yet supported. \n");
+            if (check_number_arguments(num_tokens, 0) == OS_SUCCESS)
+            {
+               status = take_picture(size_320x240);
+               if (status == OS_SUCCESS)
+               {
+                   OS_printf("Take small picture success\n");
+               }
+               else
+               {
+                   OS_printf("Take small picture failed!\n");
+               }
+            }
             break;
         
         case CMD_MEDIUM:
-            printf("Command not yet supported. \n");
-            //if (check_number_arguments(num_tokens, 0) == OS_SUCCESS)
-            //{
-            //    status = take_picture(size_1600x1200);
-            //    if (status == OS_SUCCESS)
-            //    {
-            //        OS_printf("Take small picture success\n");
-            //    }
-            //    else
-            //    {
-            //        OS_printf("Take small picture failed!\n");
-            //    }
-            //}
+            // printf("Command not yet supported. \n");
+            if (check_number_arguments(num_tokens, 0) == OS_SUCCESS)
+            {
+               status = take_picture(size_1600x1200);
+               if (status == OS_SUCCESS)
+               {
+                   OS_printf("Take small picture success\n");
+               }
+               else
+               {
+                   OS_printf("Take small picture failed!\n");
+               }
+            }
             break;
 
         case CMD_LARGE:
-            printf("Command not yet supported. \n");
-            //if (check_number_arguments(num_tokens, 0) == OS_SUCCESS)
-            //{
-            //    status = take_picture(size_2592x1944);
-            //    if (status == OS_SUCCESS)
-            //    {
-            //        OS_printf("Take small picture success\n");
-            //    }
-            //    else
-            //    {
-            //        OS_printf("Take small picture failed!\n");
-            //    }
-            //}
+            // printf("Command not yet supported. \n");
+            if (check_number_arguments(num_tokens, 0) == OS_SUCCESS)
+            {
+               status = take_picture(size_2592x1944);
+               if (status == OS_SUCCESS)
+               {
+                   OS_printf("Take small picture success\n");
+               }
+               else
+               {
+                   OS_printf("Take small picture failed!\n");
+               }
+            }
             break;
         
         default: 
