@@ -159,8 +159,19 @@ int take_picture(uint8_t size)
     OS_printf("Read prep success\n");
 
     //// Read FIFO
-    char cam_buf[length];
-    status = CAM_read(cam_buf, (uint16_t*) &x, (uint8_t*) &status);
+    FILE *expFile;
+    expFile = fopen("exp.jpg", "wb");
+
+    if(expFile == NULL)
+    {
+        OS_printf("Error opening file!\n");
+        status = OS_ERROR;
+    }
+
+    status = CAM_read((char*) &data, (uint16_t*) &x, (uint8_t*) &status);
+
+    fwrite(data, x, 1, expFile); 
+    fclose(expFile);
     if (status != OS_SUCCESS) return OS_ERROR;
     OS_printf("FIFO success\n");
 
