@@ -159,7 +159,8 @@ int take_picture(uint8_t size)
     OS_printf("Read prep success\n");
 
     //// Read FIFO
-    status = CAM_fifo((uint16*) &x, (uint8*) &status);
+    char cam_buf[length];
+    status = CAM_read(cam_buf, (uint16_t*) &x, (uint8_t*) &status);
     if (status != OS_SUCCESS) return OS_ERROR;
     OS_printf("FIFO success\n");
 
@@ -259,11 +260,11 @@ int process_command(int cc, int num_tokens, char tokens[MAX_INPUT_TOKENS][MAX_IN
                status = take_picture(size_1600x1200);
                if (status == OS_SUCCESS)
                {
-                   OS_printf("Take small picture success\n");
+                   OS_printf("Take medium picture success\n");
                }
                else
                {
-                   OS_printf("Take small picture failed!\n");
+                   OS_printf("Take medium picture failed!\n");
                }
             }
             break;
@@ -275,11 +276,11 @@ int process_command(int cc, int num_tokens, char tokens[MAX_INPUT_TOKENS][MAX_IN
                status = take_picture(size_2592x1944);
                if (status == OS_SUCCESS)
                {
-                   OS_printf("Take small picture success\n");
+                   OS_printf("Take large picture success\n");
                }
                else
                {
-                   OS_printf("Take small picture failed!\n");
+                   OS_printf("Take large picture failed!\n");
                }
             }
             break;
