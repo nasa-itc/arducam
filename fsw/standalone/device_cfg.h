@@ -19,5 +19,6 @@
 //#define OV2640
 #define OV5640 
 //#define OV5642
+#define FILE_MODE
 
 #endif /* _ARDUCAM_CHECKOUT_DEVICE_CFG_H_ */

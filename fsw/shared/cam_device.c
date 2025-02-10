@@ -501,7 +501,7 @@ int32_t CAM_read(char* buf, uint16_t* i, uint8_t* status)
     uint8_t spiw[2] = { 0x3D, 0x00}; // FIFO read
     
     #ifdef FILE_OUTPUT
-        FILE *fp1 = fopen("pic.jpg", "a"); 
+        FILE *fp1 = fopen("./pic.jpg", "a"); 
         if (!fp1)
         {
             OS_printf("\t ERROR: Could not create file\n");
