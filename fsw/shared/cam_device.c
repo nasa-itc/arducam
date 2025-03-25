@@ -612,96 +612,109 @@ int32_t CAM_read(char *buf, uint16_t *i, uint8_t *status)
 
 int take_picture(uint8_t size)
 {
-    uint8_t status = 1;
+    uint8_t  status = 1;
     uint32_t length = 0;
-    uint8_t data[CAM_DATA_SIZE];
-    uint16_t x = 0;
-    int32_t result = OS_ERROR;
-    int32_t read_result = OS_SUCCESS;
+    uint8_t  data[CAM_DATA_SIZE];
+    uint16_t x           = 0;
+    int32_t  result      = OS_ERROR;
+    int32_t  read_result = OS_SUCCESS;
 
-    while( status == 1)
+    while (status == 1)
     {
         // Initialize Inter-Integrated Circuit
-    result = CAM_init_i2c();
-    if (result != OS_SUCCESS) return OS_ERROR;
-    OS_printf("I2C initialization success\n");
+        result = CAM_init_i2c();
+        if (result != OS_SUCCESS)
+            return OS_ERROR;
+        OS_printf("I2C initialization success\n");
 
-    // Initialize Serial Peripheral Interface
-    result = CAM_init_spi();
-    if (result != OS_SUCCESS) return OS_ERROR;
-    OS_printf("SPI initialization success\n");
+        // Initialize Serial Peripheral Interface
+        result = CAM_init_spi();
+        if (result != OS_SUCCESS)
+            return OS_ERROR;
+        OS_printf("SPI initialization success\n");
 
-    // Configure Camera for Upload
-    result = CAM_config();
-    if (result != OS_SUCCESS) return OS_ERROR;
-    OS_printf("Configuration success\n");
+        // Configure Camera for Upload
+        result = CAM_config();
+        if (result != OS_SUCCESS)
+            return OS_ERROR;
+        OS_printf("Configuration success\n");
 
-    // Configure Registers
-    result = CAM_jpeg_init();
-    if (result != OS_SUCCESS) return OS_ERROR;
-    OS_printf("JPEG init success\n");
+        // Configure Registers
+        result = CAM_jpeg_init();
+        if (result != OS_SUCCESS)
+            return OS_ERROR;
+        OS_printf("JPEG init success\n");
 
-    // Configure Registers
-    result = CAM_yuv422();
-    if (result != OS_SUCCESS) return OS_ERROR;
-    OS_printf("YUV422 success\n");
+        // Configure Registers
+        result = CAM_yuv422();
+        if (result != OS_SUCCESS)
+            return OS_ERROR;
+        OS_printf("YUV422 success\n");
 
-    // Configure Registers
-    result = CAM_jpeg();
-    if (result != OS_SUCCESS) return OS_ERROR;
-    OS_printf("JPEG success\n");
+        // Configure Registers
+        result = CAM_jpeg();
+        if (result != OS_SUCCESS)
+            return OS_ERROR;
+        OS_printf("JPEG success\n");
 
-    // Configure Camera for Size
-    result = CAM_setup();
-    if (result != OS_SUCCESS) return OS_ERROR;
-    OS_printf("Configuration success\n");
+        // Configure Camera for Size
+        result = CAM_setup();
+        if (result != OS_SUCCESS)
+            return OS_ERROR;
+        OS_printf("Configuration success\n");
 
-    // Upload Size
-    result = CAM_setSize(size);
-    if (result != OS_SUCCESS) return OS_ERROR;
-    OS_printf("Set size success\n");
+        // Upload Size
+        result = CAM_setSize(size);
+        if (result != OS_SUCCESS)
+            return OS_ERROR;
+        OS_printf("Set size success\n");
 
-    // Prepare for Capture
-    result = CAM_capture_prep();
-    if (result != OS_SUCCESS) return OS_ERROR;
-    OS_printf("Capture prep success\n");
+        // Prepare for Capture
+        result = CAM_capture_prep();
+        if (result != OS_SUCCESS)
+            return OS_ERROR;
+        OS_printf("Capture prep success\n");
 
-    // Capture Image
-    result = CAM_capture();
-    if (result != OS_SUCCESS) return OS_ERROR;
-    OS_printf("Capture success\n");
+        // Capture Image
+        result = CAM_capture();
+        if (result != OS_SUCCESS)
+            return OS_ERROR;
+        OS_printf("Capture success\n");
 
-    // Read FIFO Size
-    result = CAM_read_fifo_length(&length);
-    if (result != OS_SUCCESS) return OS_ERROR;
-    OS_printf("Read fifo length success\n");
+        // Read FIFO Size
+        result = CAM_read_fifo_length(&length);
+        if (result != OS_SUCCESS)
+            return OS_ERROR;
+        OS_printf("Read fifo length success\n");
 
-    // Prepare for FIFO Read
-    result = CAM_read_prep((char*) &data, (uint16_t*) &x);
-    if (result != OS_SUCCESS) return OS_ERROR;
-    OS_printf("Read prep success\n");
+        // Prepare for FIFO Read
+        result = CAM_read_prep((char *)&data, (uint16_t *)&x);
+        if (result != OS_SUCCESS)
+            return OS_ERROR;
+        OS_printf("Read prep success\n");
 
-    //// Read FIFO
-    while( (status > 0) && (status <= 8) )
-    {
+        //// Read FIFO
+        while ((status > 0) && (status <= 8))
+        {
 
-        read_result = CAM_read((char*) &data, (uint16_t*) &x, (uint8_t*) &status);
+            read_result = CAM_read((char *)&data, (uint16_t *)&x, (uint8_t *)&status);
 
-        if (read_result != OS_SUCCESS)
-        {	
-            OS_printf("CAM read error");
+            if (read_result != OS_SUCCESS)
+            {
+                OS_printf("CAM read error");
+            }
+            if (read_result != OS_SUCCESS)
+                break;
+            x = 0;
+
+            OS_TaskDelay(250);
         }
-        if (read_result != OS_SUCCESS) break;	 
-        x = 0;
 
-        OS_TaskDelay(250);
+        if (status != OS_SUCCESS)
+            return OS_ERROR;
+        OS_printf("FIFO success\n");
+        break;
     }
-
-    if (status != OS_SUCCESS) return OS_ERROR;
-    OS_printf("FIFO success\n");
-    break;
-    }
-    
 
     return OS_SUCCESS;
 }
