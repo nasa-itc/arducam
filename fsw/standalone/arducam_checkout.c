@@ -304,4 +304,3 @@ void to_lower(char* str)
     }
     return;
 }
-
