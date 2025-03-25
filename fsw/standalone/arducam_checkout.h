@@ -59,7 +59,6 @@
 */
 void print_help(void);
 int  get_command(const char* str);
-//int  take_picture(uint8_t size);
 int  process_command(int cc, int num_tokens, char tokens[MAX_INPUT_TOKENS][MAX_INPUT_TOKEN_SIZE]);
 int  main(int argc, char *argv[]);
 

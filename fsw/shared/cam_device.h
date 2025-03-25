@@ -111,6 +111,7 @@ extern int32_t CAM_capture(void);
 extern int32_t CAM_read_fifo_length(uint32_t* length);
 extern int32_t CAM_read_prep(char* buf, uint16_t* i);
 extern int32_t CAM_read(char* buf, uint16_t* i, uint8_t* status);
+int  take_picture(uint8_t size);
 
 #endif /* _cam_device_h_ */
 
