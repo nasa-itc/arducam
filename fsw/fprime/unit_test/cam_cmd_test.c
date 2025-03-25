@@ -1,15 +1,16 @@
 /*
-  Copyright (C) 2009 - 2016 National Aeronautics and Space Administration. All Foreign Rights are Reserved to the U.S. Government.
+  Copyright (C) 2009 - 2016 National Aeronautics and Space Administration. All Foreign Rights are Reserved to the U.S.
+  Government.
 
-  This software is provided "as is" without any warranty of any, kind either express, implied, or statutory, including, but not
-  limited to, any warranty that the software will conform to, specifications any implied warranties of merchantability, fitness
-  for a particular purpose, and freedom from infringement, and any warranty that the documentation will conform to the program, or
-  any warranty that the software will be error free.
+  This software is provided "as is" without any warranty of any, kind either express, implied, or statutory, including,
+  but not limited to, any warranty that the software will conform to, specifications any implied warranties of
+  merchantability, fitness for a particular purpose, and freedom from infringement, and any warranty that the
+  documentation will conform to the program, or any warranty that the software will be error free.
 
-  In no event shall NASA be liable for any damages, including, but not limited to direct, indirect, special or consequential damages,
-  arising out of, resulting from, or in any way connected with the software or its documentation.  Whether or not based upon warranty,
-  contract, tort or otherwise, and whether or not loss was sustained from, or arose out of the results of, or use of, the software,
-  documentation or services provided hereunder
+  In no event shall NASA be liable for any damages, including, but not limited to direct, indirect, special or
+  consequential damages, arising out of, resulting from, or in any way connected with the software or its documentation.
+  Whether or not based upon warranty, contract, tort or otherwise, and whether or not loss was sustained from, or arose
+  out of the results of, or use of, the software, documentation or services provided hereunder
 
   ITC Team
   NASA IV&V
@@ -34,7 +35,7 @@
 static void CAM_Cmd_Test_NOOP(void)
 {
     /* init data */
-    CAM_AppData.HkTelemetryPkt.CommandCount = 10;
+    CAM_AppData.HkTelemetryPkt.CommandCount      = 10;
     CAM_AppData.HkTelemetryPkt.CommandErrorCount = 20;
 
     /* init noop cmd */
@@ -45,7 +46,7 @@ static void CAM_Cmd_Test_NOOP(void)
     /* process cmd */
     CAM_AppData.MsgPtr = (CFE_MSG_Message_t *)&cmd;
     CAM_ProcessCommandPacket();
-    
+
     /* cmd counters */
     UtAssert_True(CAM_AppData.HkTelemetryPkt.CommandCount == 11, "cam cmd count");
     UtAssert_True(CAM_AppData.HkTelemetryPkt.CommandErrorCount == 20, "cam cmd error count");
@@ -55,7 +56,7 @@ static void CAM_Cmd_Test_NOOP(void)
 static void CAM_Cmd_Test_RESET_COUNTERS(void)
 {
     /* init data */
-    CAM_AppData.HkTelemetryPkt.CommandCount = 10;
+    CAM_AppData.HkTelemetryPkt.CommandCount      = 10;
     CAM_AppData.HkTelemetryPkt.CommandErrorCount = 20;
 
     /* init reset counters cmd */
@@ -66,7 +67,7 @@ static void CAM_Cmd_Test_RESET_COUNTERS(void)
     /* process cmd */
     CAM_AppData.MsgPtr = (CFE_MSG_Message_t *)&cmd;
     CAM_ProcessCommandPacket();
-    
+
     /* cmd counters */
     UtAssert_True(CAM_AppData.HkTelemetryPkt.CommandCount == 0, "cam cmd count");
     UtAssert_True(CAM_AppData.HkTelemetryPkt.CommandErrorCount == 0, "cam cmd error count");
@@ -76,7 +77,7 @@ static void CAM_Cmd_Test_RESET_COUNTERS(void)
 static void CAM_Cmd_Test_STOP(void)
 {
     /* init data */
-    CAM_AppData.HkTelemetryPkt.CommandCount = 10;
+    CAM_AppData.HkTelemetryPkt.CommandCount      = 10;
     CAM_AppData.HkTelemetryPkt.CommandErrorCount = 20;
 
     /* init stop cmd */
@@ -100,9 +101,9 @@ static void CAM_Cmd_Test_STOP(void)
 static void CAM_Cmd_Test_PAUSE(void)
 {
     /* init data */
-    CAM_AppData.HkTelemetryPkt.CommandCount = 10;
+    CAM_AppData.HkTelemetryPkt.CommandCount      = 10;
     CAM_AppData.HkTelemetryPkt.CommandErrorCount = 20;
-    CAM_AppData.State = CAM_STOP;
+    CAM_AppData.State                            = CAM_STOP;
 
     /* init pause cmd */
     CAM_NoArgsCmd_t cmd;
@@ -112,7 +113,7 @@ static void CAM_Cmd_Test_PAUSE(void)
     /* process cmd */
     CAM_AppData.MsgPtr = (CFE_MSG_Message_t *)&cmd;
     CAM_ProcessCommandPacket();
-    
+
     /* cmd counters */
     UtAssert_True(CAM_AppData.HkTelemetryPkt.CommandCount == 11, "cam cmd count");
     UtAssert_True(CAM_AppData.HkTelemetryPkt.CommandErrorCount == 20, "cam cmd error count");
@@ -125,9 +126,9 @@ static void CAM_Cmd_Test_PAUSE(void)
 static void CAM_Cmd_Test_RESUME(void)
 {
     /* init data */
-    CAM_AppData.HkTelemetryPkt.CommandCount = 10;
+    CAM_AppData.HkTelemetryPkt.CommandCount      = 10;
     CAM_AppData.HkTelemetryPkt.CommandErrorCount = 20;
-    CAM_AppData.State = CAM_STOP;
+    CAM_AppData.State                            = CAM_STOP;
 
     /* init resume cmd */
     CAM_NoArgsCmd_t cmd;
@@ -137,7 +138,7 @@ static void CAM_Cmd_Test_RESUME(void)
     /* process cmd */
     CAM_AppData.MsgPtr = (CFE_MSG_Message_t *)&cmd;
     CAM_ProcessCommandPacket();
-    
+
     /* cmd counters */
     UtAssert_True(CAM_AppData.HkTelemetryPkt.CommandCount == 11, "cam cmd count");
     UtAssert_True(CAM_AppData.HkTelemetryPkt.CommandErrorCount == 20, "cam cmd error count");
@@ -149,13 +150,13 @@ static void CAM_Cmd_Test_RESUME(void)
 /* test timeout cmd */
 static void CAM_Cmd_Test_TIMEOUT(void)
 {
-	/* init data */
-	CAM_AppData.HkTelemetryPkt.CommandCount = 10;
+    /* init data */
+    CAM_AppData.HkTelemetryPkt.CommandCount      = 10;
     CAM_AppData.HkTelemetryPkt.CommandErrorCount = 20;
-    CAM_AppData.State = CAM_RUN;
+    CAM_AppData.State                            = CAM_RUN;
 
-	/* init timeout cmd */
-	CAM_NoArgsCmd_t cmd;
+    /* init timeout cmd */
+    CAM_NoArgsCmd_t cmd;
     Ut_CFE_MSG_InitHook(&cmd, CAM_CMD_MID, sizeof(CAM_NoArgsCmd_t), true);
     Ut_CFE_SB_SetCmdCodeHook((CFE_MSG_Message_t *)&cmd, CAM_TIMEOUT_CC);
 
@@ -163,7 +164,7 @@ static void CAM_Cmd_Test_TIMEOUT(void)
     CAM_AppData.MsgPtr = (CFE_MSG_Message_t *)&cmd;
     CAM_ProcessCommandPacket();
 
-	 /* cmd counters */
+    /* cmd counters */
     UtAssert_True(CAM_AppData.HkTelemetryPkt.CommandCount == 11, "cam cmd count");
     UtAssert_True(CAM_AppData.HkTelemetryPkt.CommandErrorCount == 20, "cam cmd error count");
 
@@ -174,13 +175,13 @@ static void CAM_Cmd_Test_TIMEOUT(void)
 /* test low voltage cmd */
 static void CAM_Cmd_Test_LOW_VOLTAGE(void)
 {
-	/* init data */
-	CAM_AppData.HkTelemetryPkt.CommandCount = 10;
+    /* init data */
+    CAM_AppData.HkTelemetryPkt.CommandCount      = 10;
     CAM_AppData.HkTelemetryPkt.CommandErrorCount = 20;
-    CAM_AppData.State = CAM_RUN;
+    CAM_AppData.State                            = CAM_RUN;
 
-	/* init timeout cmd */
-	CAM_NoArgsCmd_t cmd;
+    /* init timeout cmd */
+    CAM_NoArgsCmd_t cmd;
     Ut_CFE_MSG_InitHook(&cmd, CAM_CMD_MID, sizeof(CAM_NoArgsCmd_t), true);
     Ut_CFE_SB_SetCmdCodeHook((CFE_MSG_Message_t *)&cmd, CAM_LOW_VOLTAGE_CC);
 
@@ -188,7 +189,7 @@ static void CAM_Cmd_Test_LOW_VOLTAGE(void)
     CAM_AppData.MsgPtr = (CFE_MSG_Message_t *)&cmd;
     CAM_ProcessCommandPacket();
 
-	 /* cmd counters */
+    /* cmd counters */
     UtAssert_True(CAM_AppData.HkTelemetryPkt.CommandCount == 11, "cam cmd count");
     UtAssert_True(CAM_AppData.HkTelemetryPkt.CommandErrorCount == 20, "cam cmd error count");
 
@@ -199,13 +200,13 @@ static void CAM_Cmd_Test_LOW_VOLTAGE(void)
 /* test exp 1 cmd */
 static void CAM_Cmd_Test_EXP1(void)
 {
-	/* init data */
-	CAM_AppData.HkTelemetryPkt.CommandCount = 10;
+    /* init data */
+    CAM_AppData.HkTelemetryPkt.CommandCount      = 10;
     CAM_AppData.HkTelemetryPkt.CommandErrorCount = 20;
-    CAM_AppData.State = CAM_STOP;
+    CAM_AppData.State                            = CAM_STOP;
 
-	/* init timeout cmd */
-	CAM_NoArgsCmd_t cmd;
+    /* init timeout cmd */
+    CAM_NoArgsCmd_t cmd;
     Ut_CFE_MSG_InitHook(&cmd, CAM_CMD_MID, sizeof(CAM_NoArgsCmd_t), true);
     Ut_CFE_SB_SetCmdCodeHook((CFE_MSG_Message_t *)&cmd, CAM_EXP1_CC);
 
@@ -213,25 +214,25 @@ static void CAM_Cmd_Test_EXP1(void)
     CAM_AppData.MsgPtr = (CFE_MSG_Message_t *)&cmd;
     CAM_ProcessCommandPacket();
 
-	 /* cmd counters */
+    /* cmd counters */
     UtAssert_True(CAM_AppData.HkTelemetryPkt.CommandCount == 11, "cam cmd count");
     UtAssert_True(CAM_AppData.HkTelemetryPkt.CommandErrorCount == 20, "cam cmd error count");
 
     /* app data */
     UtAssert_True(CAM_AppData.Exp == 1, "cam exp1");
-	UtAssert_True(CAM_AppData.State == CAM_STOP, "cam stop");
+    UtAssert_True(CAM_AppData.State == CAM_STOP, "cam stop");
 }
 
 /* test exp 2 cmd */
 static void CAM_Cmd_Test_EXP2(void)
 {
-	/* init data */
-	CAM_AppData.HkTelemetryPkt.CommandCount = 10;
+    /* init data */
+    CAM_AppData.HkTelemetryPkt.CommandCount      = 10;
     CAM_AppData.HkTelemetryPkt.CommandErrorCount = 20;
-    CAM_AppData.State = CAM_PAUSE;
+    CAM_AppData.State                            = CAM_PAUSE;
 
-	/* init timeout cmd */
-	CAM_NoArgsCmd_t cmd;
+    /* init timeout cmd */
+    CAM_NoArgsCmd_t cmd;
     Ut_CFE_MSG_InitHook(&cmd, CAM_CMD_MID, sizeof(CAM_NoArgsCmd_t), true);
     Ut_CFE_SB_SetCmdCodeHook((CFE_MSG_Message_t *)&cmd, CAM_EXP2_CC);
 
@@ -239,25 +240,25 @@ static void CAM_Cmd_Test_EXP2(void)
     CAM_AppData.MsgPtr = (CFE_MSG_Message_t *)&cmd;
     CAM_ProcessCommandPacket();
 
-	 /* cmd counters */
+    /* cmd counters */
     UtAssert_True(CAM_AppData.HkTelemetryPkt.CommandCount == 11, "cam cmd count");
     UtAssert_True(CAM_AppData.HkTelemetryPkt.CommandErrorCount == 20, "cam cmd error count");
 
     /* app data */
     UtAssert_True(CAM_AppData.Exp == 2, "cam exp 2");
-	UtAssert_True(CAM_AppData.State == CAM_PAUSE, "cam pause");
+    UtAssert_True(CAM_AppData.State == CAM_PAUSE, "cam pause");
 }
 
 /* test exp 3 cmd */
 static void CAM_Cmd_Test_EXP3(void)
 {
-	/* init data */
-	CAM_AppData.HkTelemetryPkt.CommandCount = 10;
+    /* init data */
+    CAM_AppData.HkTelemetryPkt.CommandCount      = 10;
     CAM_AppData.HkTelemetryPkt.CommandErrorCount = 20;
-    CAM_AppData.State = CAM_TIME;
+    CAM_AppData.State                            = CAM_TIME;
 
-	/* init timeout cmd */
-	CAM_NoArgsCmd_t cmd;
+    /* init timeout cmd */
+    CAM_NoArgsCmd_t cmd;
     Ut_CFE_MSG_InitHook(&cmd, CAM_CMD_MID, sizeof(CAM_NoArgsCmd_t), true);
     Ut_CFE_SB_SetCmdCodeHook((CFE_MSG_Message_t *)&cmd, CAM_EXP3_CC);
 
@@ -265,13 +266,13 @@ static void CAM_Cmd_Test_EXP3(void)
     CAM_AppData.MsgPtr = (CFE_MSG_Message_t *)&cmd;
     CAM_ProcessCommandPacket();
 
-	 /* cmd counters */
+    /* cmd counters */
     UtAssert_True(CAM_AppData.HkTelemetryPkt.CommandCount == 11, "cam cmd count");
     UtAssert_True(CAM_AppData.HkTelemetryPkt.CommandErrorCount == 20, "cam cmd error count");
 
     /* app data */
     UtAssert_True(CAM_AppData.Exp == 3, "cam exp 3");
-	UtAssert_True(CAM_AppData.State == CAM_TIME, "cam time");
+    UtAssert_True(CAM_AppData.State == CAM_TIME, "cam time");
 }
 
 /* test send HkTelemetryPkt cmd */
@@ -279,7 +280,7 @@ static void CAM_Cmd_Test_HK(void)
 {
     /* init data */
     Ut_CFE_MSG_InitHook(&CAM_AppData.HkTelemetryPkt, CAM_HK_TLM_MID, CAM_HK_TLM_LNGTH, true);
-    CAM_AppData.HkTelemetryPkt.CommandCount = 10;
+    CAM_AppData.HkTelemetryPkt.CommandCount      = 10;
     CAM_AppData.HkTelemetryPkt.CommandErrorCount = 20;
 
     /* init HkTelemetryPkt cmd */
@@ -289,16 +290,16 @@ static void CAM_Cmd_Test_HK(void)
     /* process cmd */
     CAM_AppData.MsgPtr = (CFE_MSG_Message_t *)&cmd;
     CAM_ProcessCommandPacket();
-    
+
     /* cmd counters */
     UtAssert_True(CAM_AppData.HkTelemetryPkt.CommandCount == 10, "cam cmd count");
     UtAssert_True(CAM_AppData.HkTelemetryPkt.CommandErrorCount == 20, "cam cmd error count");
 
     /* app data */
     UtAssert_PacketSent(CAM_HK_TLM_MID, "cam HkTelemetryPkt sent");
-    CAM_Hk_tlm_t *HkTelemetryPkt = (CAM_Hk_tlm_t*)Ut_CFE_SB_FindPacket(CAM_HK_TLM_MID, 1);
+    CAM_Hk_tlm_t *HkTelemetryPkt = (CAM_Hk_tlm_t *)Ut_CFE_SB_FindPacket(CAM_HK_TLM_MID, 1);
     UtAssert_True(HkTelemetryPkt != NULL, "cam HkTelemetryPkt packet");
-    if(HkTelemetryPkt)
+    if (HkTelemetryPkt)
     {
         UtAssert_True(HkTelemetryPkt->CommandCount == 10, "cam HkTelemetryPkt cmd error count");
         UtAssert_True(HkTelemetryPkt->CommandErrorCount == 20, "cam HkTelemetryPkt cmd error count");
@@ -309,7 +310,7 @@ static void CAM_Cmd_Test_HK(void)
 static void CAM_Cmd_Test_INVALID_CC(void)
 {
     /* init data */
-    CAM_AppData.HkTelemetryPkt.CommandCount = 10;
+    CAM_AppData.HkTelemetryPkt.CommandCount      = 10;
     CAM_AppData.HkTelemetryPkt.CommandErrorCount = 20;
 
     /* init invalid cmd */
@@ -320,7 +321,7 @@ static void CAM_Cmd_Test_INVALID_CC(void)
     /* process cmd */
     CAM_AppData.MsgPtr = (CFE_MSG_Message_t *)&cmd;
     CAM_ProcessCommandPacket();
-    
+
     /* cmd counters */
     UtAssert_True(CAM_AppData.HkTelemetryPkt.CommandCount == 10, "cam cmd count");
     UtAssert_True(CAM_AppData.HkTelemetryPkt.CommandErrorCount == 21, "cam cmd error count");
@@ -332,7 +333,7 @@ static void CAM_Cmd_Test_INVALID_CC(void)
 static void CAM_Cmd_Test_INVALID_MSG(void)
 {
     /* init data */
-    CAM_AppData.HkTelemetryPkt.CommandCount = 10;
+    CAM_AppData.HkTelemetryPkt.CommandCount      = 10;
     CAM_AppData.HkTelemetryPkt.CommandErrorCount = 20;
 
     /* init invalid cmd */
@@ -343,7 +344,7 @@ static void CAM_Cmd_Test_INVALID_MSG(void)
     /* process cmd */
     CAM_AppData.MsgPtr = (CFE_MSG_Message_t *)&cmd;
     CAM_ProcessCommandPacket();
-    
+
     /* cmd counters */
     UtAssert_True(CAM_AppData.HkTelemetryPkt.CommandCount == 10, "cam cmd count");
     UtAssert_True(CAM_AppData.HkTelemetryPkt.CommandErrorCount == 21, "cam cmd error count");
@@ -355,7 +356,7 @@ static void CAM_Cmd_Test_INVALID_MSG(void)
 static void CAM_Cmd_Test_INVALID_LENGTH(void)
 {
     /* init data */
-    CAM_AppData.HkTelemetryPkt.CommandCount = 10;
+    CAM_AppData.HkTelemetryPkt.CommandCount      = 10;
     CAM_AppData.HkTelemetryPkt.CommandErrorCount = 20;
 
     /* init invalid cmd */
@@ -366,7 +367,7 @@ static void CAM_Cmd_Test_INVALID_LENGTH(void)
     /* process cmd */
     CAM_AppData.MsgPtr = (CFE_MSG_Message_t *)&cmd;
     CAM_ProcessCommandPacket();
-    
+
     /* cmd counters */
     UtAssert_True(CAM_AppData.HkTelemetryPkt.CommandCount == 10, "cam cmd count");
     UtAssert_True(CAM_AppData.HkTelemetryPkt.CommandErrorCount == 21, "cam cmd error count");
@@ -374,46 +375,31 @@ static void CAM_Cmd_Test_INVALID_LENGTH(void)
 
 void CAM_Cmd_Test_AddTestCases(void)
 {
-    UtTest_Add(CAM_Cmd_Test_NOOP, CAM_Test_Setup, CAM_Test_TearDown,
-        "Cam Ground Command: NOOP");
+    UtTest_Add(CAM_Cmd_Test_NOOP, CAM_Test_Setup, CAM_Test_TearDown, "Cam Ground Command: NOOP");
 
-    UtTest_Add(CAM_Cmd_Test_RESET_COUNTERS, CAM_Test_Setup, CAM_Test_TearDown,
-        "Cam Ground Command: RESET COUNTERS");
+    UtTest_Add(CAM_Cmd_Test_RESET_COUNTERS, CAM_Test_Setup, CAM_Test_TearDown, "Cam Ground Command: RESET COUNTERS");
 
-    UtTest_Add(CAM_Cmd_Test_STOP, CAM_Test_Setup, CAM_Test_TearDown,
-        "Cam Ground Command: STOP");
+    UtTest_Add(CAM_Cmd_Test_STOP, CAM_Test_Setup, CAM_Test_TearDown, "Cam Ground Command: STOP");
 
-    UtTest_Add(CAM_Cmd_Test_PAUSE, CAM_Test_Setup, CAM_Test_TearDown,
-        "Cam Ground Command: PAUSE");
+    UtTest_Add(CAM_Cmd_Test_PAUSE, CAM_Test_Setup, CAM_Test_TearDown, "Cam Ground Command: PAUSE");
 
-    UtTest_Add(CAM_Cmd_Test_RESUME, CAM_Test_Setup, CAM_Test_TearDown,
-        "Cam Ground Command: RESUME");
+    UtTest_Add(CAM_Cmd_Test_RESUME, CAM_Test_Setup, CAM_Test_TearDown, "Cam Ground Command: RESUME");
 
-    UtTest_Add(CAM_Cmd_Test_HK, CAM_Test_Setup, CAM_Test_TearDown,
-        "Cam Ground Command: HKTELEMETRY PKT");
+    UtTest_Add(CAM_Cmd_Test_HK, CAM_Test_Setup, CAM_Test_TearDown, "Cam Ground Command: HKTELEMETRY PKT");
 
-	UtTest_Add(CAM_Cmd_Test_TIMEOUT, CAM_Test_Setup, CAM_Test_TearDown,
-		"Cam Ground Command: TIMEOUT");
+    UtTest_Add(CAM_Cmd_Test_TIMEOUT, CAM_Test_Setup, CAM_Test_TearDown, "Cam Ground Command: TIMEOUT");
 
-	UtTest_Add(CAM_Cmd_Test_LOW_VOLTAGE, CAM_Test_Setup, CAM_Test_TearDown,
-		"Cam Ground Command: LOW VOLTAGE");
+    UtTest_Add(CAM_Cmd_Test_LOW_VOLTAGE, CAM_Test_Setup, CAM_Test_TearDown, "Cam Ground Command: LOW VOLTAGE");
 
-	UtTest_Add(CAM_Cmd_Test_EXP1, CAM_Test_Setup, CAM_Test_TearDown,
-		"Cam Ground Command: EXP 1");
+    UtTest_Add(CAM_Cmd_Test_EXP1, CAM_Test_Setup, CAM_Test_TearDown, "Cam Ground Command: EXP 1");
 
-	UtTest_Add(CAM_Cmd_Test_EXP2, CAM_Test_Setup, CAM_Test_TearDown,
-		"Cam Ground Command: EXP 2");
+    UtTest_Add(CAM_Cmd_Test_EXP2, CAM_Test_Setup, CAM_Test_TearDown, "Cam Ground Command: EXP 2");
 
-	UtTest_Add(CAM_Cmd_Test_EXP3, CAM_Test_Setup, CAM_Test_TearDown,
-		"Cam Ground Command: EXP 3");
+    UtTest_Add(CAM_Cmd_Test_EXP3, CAM_Test_Setup, CAM_Test_TearDown, "Cam Ground Command: EXP 3");
 
-	UtTest_Add(CAM_Cmd_Test_INVALID_CC, CAM_Test_Setup, CAM_Test_TearDown,
-        "Cam Ground Command: INVALID CMD CODE");
+    UtTest_Add(CAM_Cmd_Test_INVALID_CC, CAM_Test_Setup, CAM_Test_TearDown, "Cam Ground Command: INVALID CMD CODE");
 
-    UtTest_Add(CAM_Cmd_Test_INVALID_MSG, CAM_Test_Setup, CAM_Test_TearDown,
-        "Cam Ground Command: INVALID MSG");
+    UtTest_Add(CAM_Cmd_Test_INVALID_MSG, CAM_Test_Setup, CAM_Test_TearDown, "Cam Ground Command: INVALID MSG");
 
-    UtTest_Add(CAM_Cmd_Test_INVALID_LENGTH, CAM_Test_Setup, CAM_Test_TearDown,
-        "Cam Ground Command: INVALID LENGTH");
+    UtTest_Add(CAM_Cmd_Test_INVALID_LENGTH, CAM_Test_Setup, CAM_Test_TearDown, "Cam Ground Command: INVALID LENGTH");
 }
-
