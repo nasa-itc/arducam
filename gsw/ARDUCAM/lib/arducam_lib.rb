@@ -51,10 +51,11 @@ end
 def confirm_arducam_data()
     dev_cmd_cnt = tlm("ARDUCAM ARDUCAM_HK_TLM_T DEVICE_COUNT")
     dev_cmd_err_cnt = tlm("ARDUCAM ARDUCAM_HK_TLM_T DEVICE_ERR_COUNT")
-    
+    cmd("ARDUCAM CAM_EXP3_CC")
     get_arducam_hk()
     # Note these checks assume default simulator configuration
-  
+    check("ARDUCAM EXP_TLM_T CAM_FIFO_LENGTH >= 0")
+    check("ARDUCAM EXP_TLM_T CAM_FIFO_DATA != NULL")
     get_arducam_hk()
     check("ARDUCAM ARDUCAM_HK_TLM_T DEVICE_COUNT >= #{dev_cmd_cnt}")
     check("ARDUCAM ARDUCAM_HK_TLM_T DEVICE_ERR_COUNT == #{dev_cmd_err_cnt}")
