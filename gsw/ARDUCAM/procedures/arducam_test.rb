@@ -1,43 +1,51 @@
 require 'cosmos'
 require 'cosmos/script'
-require 'mission_lib.rb'
+require 'arducam_lib.rb'
 
-class LPT < Cosmos::Test
+class ARDUCAM_Functional_Test < Cosmos::Test
   def setup
-      enable_TO_and_verify()
+    safe_arducam()
   end
 
-  def test_lpt
+  def test_application
+      start("tests/arducam_app_test.rb")
+  end
+
+  def test_device
+    start("tests/arducam_device_test.rb")
   end
 
   def teardown
-      cmd("CFS_RADIO TO_PAUSE_OUTPUT")
+    safe_arducam()
   end
 end
 
-class CPT < Cosmos::Test
-  def setup
-      
+class ARDUCAM_Automated_Scenario_Test < Cosmos::Test
+  def setup 
+    safe_arducam()
   end
 
-  def test_cpt
+  def test_AST
+      start("tests/arducam_ast_test.rb")
   end
 
   def teardown
-
+    safe_arducam()
   end
 end
 
-class Generic_arducam_Test < Cosmos::TestSuite
+class Arducam_Test < Cosmos::TestSuite
   def initialize
       super()
-      add_test('CPT')
-      add_test('LPT')
+      add_test('ARDUCAM_Functional_Test')
+      add_test('ARDUCAM_Automated_Scenario_Test')
   end
 
   def setup
+    safe_arducam()
   end
   
   def teardown
+    safe_arducam()
   end
 end
