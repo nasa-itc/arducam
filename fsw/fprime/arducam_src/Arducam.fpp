@@ -20,10 +20,27 @@ module Components {
         async command NOOP(
         )
 
+        @ Command to Reset Counters
+        async command RESET_COUNTERS(
+        )
+
+        @ Command to Report HouseKeeping
+        async command REPORT_HOUSEKEEPING(
+        )
+
+        async command HARDWARE_CHECKOUT(
+        )
+
         @ Telemetry event 
         event TELEM(
             log_info: string size 60 
         ) severity activity high format "Arducam: {}"
+
+        @ Command Count
+        telemetry CommandCount: U32
+
+        @ Command Error Count
+        telemetry CommandErrorCount: U32
 
         ##############################################################################
         #### Uncomment the following examples to start customizing your component ####
