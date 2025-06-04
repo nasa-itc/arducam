@@ -18,8 +18,8 @@ typedef struct
 {
     uint8_t                     CommandErrorCount;
     uint8_t                     CommandCount;
-} __attribute__((packed)) SAMPLE_Hk_tlm_t;
-#define SAMPLE_HK_TLM_LNGTH sizeof(SAMPLE_Hk_tlm_t)
+} __attribute__((packed)) CAM_Hk_tlm_t;
+#define CAM_HK_TLM_LNGTH sizeof(CAM_Hk_tlm_t)
 
 namespace Components {
 
@@ -29,7 +29,7 @@ namespace Components {
 
     public:
 
-    SAMPLE_Hk_tlm_t HkTelemetryPkt;
+    CAM_Hk_tlm_t HkTelemetryPkt;
 
       // ----------------------------------------------------------------------
       // Component construction and destruction
