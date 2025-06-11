@@ -8,12 +8,6 @@
 #include "FpConfig.hpp"
 
 
-
-#include "nos_link.h"
-
-// i2c_bus_info_t CAM_I2C;
-// spi_info_t CAM_SPI;
-
 namespace Components {
 
   // ----------------------------------------------------------------------
@@ -118,24 +112,26 @@ namespace Components {
     this->cmdResponse_out(opCode, cmdSeq, Fw::CmdResponse::OK);
   }
 
-  void Arducam :: IMAGE_cmdHandler(FwOpcodeType opCode, U32 cmdSeq, const U32 image_size) {
+  void Arducam :: IMAGE_cmdHandler(FwOpcodeType opCode, U32 cmdSeq, const Arducam_ImageSize image_size) {
     int32_t status = OS_SUCCESS;
-    if (image_size == 0) //Small image
+
+    switch (image_size.e)
     {
+      case 0:
         status = take_picture(size_320x240);
-    }
-    else if (image_size == 1)
-    {
+        break;
+      case 1:
         status = take_picture(size_1600x1200);
-    }
-    else if (image_size == 2)
-    {
+        break;
+      case 2:
         status = take_picture(size_2592x1944);
+        break;
+
+      default:
+        status = -1;
+        break;
     }
-    else
-    {
-        status = -1; //Illegal value for image size
-    }
+
     if (status == OS_SUCCESS)
     {   
         this->log_ACTIVITY_HI_TELEM("Arducam image sent\n");

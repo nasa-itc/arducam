@@ -14,6 +14,8 @@ extern "C"{
 #include "cam_registers.h"
 }
 
+#include "nos_link.h"
+
 typedef struct
 {
     uint8_t                     CommandErrorCount;
@@ -61,7 +63,7 @@ namespace Components {
       void IMAGE_cmdHandler(
         FwOpcodeType opcode, // The opcode
         U32 cmdSeq, // The command sequence number
-        U32 image_size //
+        Arducam_ImageSize image_size //
       ) override;
 
       void SPI_cmdHandler(
