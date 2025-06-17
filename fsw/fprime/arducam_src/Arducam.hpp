@@ -9,6 +9,20 @@
 
 #include "arducam_src/ArducamComponentAc.hpp"
 
+extern "C"{
+#include "cam_device.h"
+#include "cam_registers.h"
+}
+
+#include "nos_link.h"
+
+typedef struct
+{
+    uint8_t                     CommandErrorCount;
+    uint8_t                     CommandCount;
+} __attribute__((packed)) CAM_Hk_tlm_t;
+#define CAM_HK_TLM_LNGTH sizeof(CAM_Hk_tlm_t)
+
 namespace Components {
 
   class Arducam :
@@ -16,6 +30,8 @@ namespace Components {
   {
 
     public:
+
+    CAM_Hk_tlm_t HkTelemetryPkt;
 
       // ----------------------------------------------------------------------
       // Component construction and destruction
@@ -47,12 +63,27 @@ namespace Components {
       void IMAGE_cmdHandler(
         FwOpcodeType opcode, // The opcode
         U32 cmdSeq, // The command sequence number
-        U32 image_size //
+        Arducam_ImageSize image_size //
       ) override;
 
       void SPI_cmdHandler(
           FwOpcodeType opcode, // The opcode
           U32 cmdSeq // The command sequence number
+      ) override;
+
+      void RESET_COUNTERS_cmdHandler(
+        FwOpcodeType opcode,
+        U32 cmdSeq
+      ) override;
+
+      void REPORT_HOUSEKEEPING_cmdHandler(
+        FwOpcodeType opcode,
+        U32 cmdSeq
+      ) override;
+
+      void HARDWARE_CHECKOUT_cmdHandler(
+        FwOpcodeType opcode,
+        U32 cmdSeq
       ) override;
 
   };
