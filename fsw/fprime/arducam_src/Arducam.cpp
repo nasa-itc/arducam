@@ -6,6 +6,7 @@
 
 #include "arducam_src/Arducam.hpp"
 #include "FpConfig.hpp"
+#include <Fw/Log/LogString.hpp>
 
 
 namespace Components {
@@ -48,7 +49,8 @@ namespace Components {
     status = CAM_init_i2c();
     if (status != OS_SUCCESS)
     {   
-        this->log_ACTIVITY_HI_TELEM("I2C Failure!\n");
+      Fw::LogStringArg log_msg("I2C Failure!\n");  
+      this->log_ACTIVITY_HI_TELEM(log_msg);
         HkTelemetryPkt.CommandErrorCount++;
     }   
     else
@@ -56,12 +58,14 @@ namespace Components {
         status = CAM_init_spi();
         if (status != OS_SUCCESS)
         {
-            this->log_ACTIVITY_HI_TELEM("SPI Failure!\n");
+            Fw::LogStringArg log_msg("SPI Failure!\n");  
+            this->log_ACTIVITY_HI_TELEM(log_msg);
             HkTelemetryPkt.CommandErrorCount++;
         }
         else
         {
-            this->log_ACTIVITY_HI_TELEM("CAM Hardware NOOP (I2C & SPI) Successful!\n");
+            Fw::LogStringArg log_msg("CAM Hardware NOOP (I2C & SPI) Successful!\n");
+            this->log_ACTIVITY_HI_TELEM(log_msg);
             HkTelemetryPkt.CommandCount++;
         }
     }   
@@ -77,12 +81,14 @@ namespace Components {
     status = CAM_init_i2c();
     if (status == OS_SUCCESS)
     {   
-        this->log_ACTIVITY_HI_TELEM("I2C Initialization Success\n");
+        Fw::LogStringArg log_msg("I2C Initialization Success\n");
+        this->log_ACTIVITY_HI_TELEM(log_msg);
         HkTelemetryPkt.CommandCount++;
     }   
     else
     {   
-        this->log_ACTIVITY_HI_TELEM("I2C Initialization Failed!\n");
+        Fw::LogStringArg log_msg("I2C Initialization Failed!\n");
+        this->log_ACTIVITY_HI_TELEM(log_msg);
         HkTelemetryPkt.CommandErrorCount++;
     }   
 
@@ -97,12 +103,14 @@ namespace Components {
     status = CAM_init_spi();
     if (status == OS_SUCCESS)
     {   
-        this->log_ACTIVITY_HI_TELEM("SPI Initialisation Success\n");
+        Fw::LogStringArg log_msg("SPI Initialisation Success\n");
+        this->log_ACTIVITY_HI_TELEM(log_msg);
         HkTelemetryPkt.CommandCount++;
     }   
     else
     {   
-        this->log_ACTIVITY_HI_TELEM("SPI Initialisation Failed!\n");
+        Fw::LogStringArg log_msg("SPI Initialisation Failed!\n");  
+        this->log_ACTIVITY_HI_TELEM(log_msg);
         HkTelemetryPkt.CommandErrorCount++;
     }   
 
@@ -134,12 +142,14 @@ namespace Components {
 
     if (status == OS_SUCCESS)
     {   
-        this->log_ACTIVITY_HI_TELEM("Arducam image sent\n");
+        Fw::LogStringArg log_msg("Arducam image sent\n");
+        this->log_ACTIVITY_HI_TELEM(log_msg);
         HkTelemetryPkt.CommandCount++;
     }   
     else
     {   
-        this->log_ACTIVITY_HI_TELEM("Arducam image send failed!\n");
+        Fw::LogStringArg log_msg("Arducam image send failed!\n");
+        this->log_ACTIVITY_HI_TELEM(log_msg);
         HkTelemetryPkt.CommandErrorCount++;
     }   
 
@@ -153,7 +163,8 @@ namespace Components {
     HkTelemetryPkt.CommandCount = 0;
     HkTelemetryPkt.CommandErrorCount = 0;
 
-    this->log_ACTIVITY_HI_TELEM("Reset Command Counters\n");
+    Fw::LogStringArg log_msg("Reset Command Counters\n");
+    this->log_ACTIVITY_HI_TELEM(log_msg);
 
     this->tlmWrite_CommandCount(HkTelemetryPkt.CommandCount);
     this->tlmWrite_CommandErrorCount(HkTelemetryPkt.CommandErrorCount);
@@ -164,7 +175,8 @@ namespace Components {
     this->tlmWrite_CommandCount(HkTelemetryPkt.CommandCount);
     this->tlmWrite_CommandErrorCount(HkTelemetryPkt.CommandErrorCount);
 
-    this->log_ACTIVITY_HI_TELEM("Updated Housekeeping Information\n");
+    Fw::LogStringArg log_msg("Updated Housekeeping Information\n");
+    this->log_ACTIVITY_HI_TELEM(log_msg);
 
     this->cmdResponse_out(opcode, cmdSeq, Fw::CmdResponse::OK);
   }
@@ -174,7 +186,8 @@ namespace Components {
     status = CAM_init_i2c();
     if (status != OS_SUCCESS)
     {   
-        this->log_ACTIVITY_HI_TELEM("I2C Failure!\n");
+        Fw::LogStringArg log_msg("I2C Failure!\n");
+        this->log_ACTIVITY_HI_TELEM(log_msg);
         HkTelemetryPkt.CommandErrorCount++;
     }   
     else
@@ -182,12 +195,14 @@ namespace Components {
         status = CAM_init_spi();
         if (status != OS_SUCCESS)
         {
-            this->log_ACTIVITY_HI_TELEM("SPI Failure!\n");
+            Fw::LogStringArg log_msg("SPI Failure!\n");
+            this->log_ACTIVITY_HI_TELEM(log_msg);
             HkTelemetryPkt.CommandErrorCount++;
         }
         else
         {
-            this->log_ACTIVITY_HI_TELEM("CAM Hardware Checkout (I2C & SPI) Successful!\n");
+            Fw::LogStringArg log_msg("CAM Hardware Checkout (I2C & SPI) Successful!\n");
+            this->log_ACTIVITY_HI_TELEM(log_msg);
             HkTelemetryPkt.CommandCount++;
         }
     }
