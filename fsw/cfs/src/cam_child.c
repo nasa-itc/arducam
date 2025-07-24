@@ -415,13 +415,16 @@ void CAM_ChildTask(void)
             switch (CAM_AppData.Exp)
             {
                 case 1:
-                    OS_printf("CAM EXP1 Complete");
+                    // OS_printf("CAM EXP1 Complete\n");
+                    CFE_EVS_SendEvent(CAM_EXP3_EID, CFE_EVS_EventType_INFORMATION, "CAM App: EXP 1 Completed");
                     break;
                 case 2:
-                    OS_printf("CAM EXP2 Complete");
+                    // OS_printf("CAM EXP2 Complete\n");
+                    CFE_EVS_SendEvent(CAM_EXP3_EID, CFE_EVS_EventType_INFORMATION, "CAM App: EXP 2 Completed");
                     break;
                 case 3:
-                    OS_printf("CAM EXP3 Complete");
+                    // OS_printf("CAM EXP3 Complete\n");
+                    CFE_EVS_SendEvent(CAM_EXP3_EID, CFE_EVS_EventType_INFORMATION, "CAM App: EXP 3 Completed");
                     break;
                 default:
                     break;

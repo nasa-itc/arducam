@@ -48,7 +48,7 @@ ivv-itc@lists.nasa.gov
 #define OV5640
 //#define OV5642
 // enable file mode:
-//#define FILE_MODE
+#define FILE_MODE
 #endif
 
 #endif
