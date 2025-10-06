@@ -6,6 +6,7 @@
 
 #include "arducam_src/Arducam.hpp"
 #include "FpConfig.hpp"
+#include <Fw/Log/LogString.hpp>
 
 
 namespace Components {
