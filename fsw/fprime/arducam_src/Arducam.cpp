@@ -105,13 +105,13 @@ namespace Components {
     {   
         Fw::LogStringArg log_msg("SPI Initialisation Success\n");
         this->log_ACTIVITY_HI_TELEM(log_msg);
-        HkTelemetryPkt.CommandCount++
+        HkTelemetryPkt.CommandCount++;
     }   
     else
     {   
         Fw::LogStringArg log_msg("SPI Initialisation Failed!\n");  
         this->log_ACTIVITY_HI_TELEM(log_msg);
-        HkTelemetryPkt.CommandErrorCount++
+        HkTelemetryPkt.CommandErrorCount++;
     }   
 
     // Tell the fprime command system that we have completed the processing of the supplied command with OK status
