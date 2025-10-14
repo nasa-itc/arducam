@@ -17,9 +17,9 @@ set(SOURCE_FILES
   "${CMAKE_CURRENT_LIST_DIR}/Arducam.fpp"
   "${CMAKE_CURRENT_LIST_DIR}/Arducam.cpp"
 
-  "${CMAKE_CURRENT_LIST_DIR}/../../shared/cam_device.c"
-  "${CMAKE_CURRENT_LIST_DIR}/../../shared/cam_registers.c"
-  "${CMAKE_CURRENT_LIST_DIR}/../../../../../fsw/apps/hwlib/sim/src/nos_link.c"
+  # "${CMAKE_CURRENT_LIST_DIR}/../../shared/cam_device.c"
+  # "${CMAKE_CURRENT_LIST_DIR}/../../shared/cam_registers.c"
+  # "${CMAKE_CURRENT_LIST_DIR}/../../../../../fsw/apps/hwlib/sim/src/nos_link.c"
 
 )
 
@@ -27,9 +27,16 @@ set(SOURCE_FILES
 # they might not be available when cmake tries to build this component.
 
 set(MOD_DEPS
+    #     Add your dependencies here
+    Fw_Types
     ${ITC_Common_LIBRARIES}
     ${NOSENGINE_LIBRARIES}
-#     Add your dependencies here
 )
 
 register_fprime_module()
+
+target_sources(${FPRIME_CURRENT_MODULE} PRIVATE 
+  "${CMAKE_CURRENT_LIST_DIR}/../../shared/cam_device.c"
+  "${CMAKE_CURRENT_LIST_DIR}/../../shared/cam_registers.c"
+  "${CMAKE_CURRENT_LIST_DIR}/../../../../../fsw/apps/hwlib/sim/src/nos_link.c"
+)
