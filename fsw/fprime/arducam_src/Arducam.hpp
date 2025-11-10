@@ -45,7 +45,7 @@ namespace Components {
       //! Destroy Arducam object
       ~Arducam();
 
-    PRIVATE:
+    private:
 
       // ----------------------------------------------------------------------
       // Handler implementations for commands
