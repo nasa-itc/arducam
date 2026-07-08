@@ -56,6 +56,7 @@ for n in range(ARDUCAM_TEST_LOOP_COUNT):
     check(f"ARDUCAM ARDUCAM_HK_TLM_T COMMANDCOUNT == {cmd_cnt}")
     check(f"ARDUCAM ARDUCAM_HK_TLM_T COMMANDERRORCOUNT == {cmd_err_cnt+1}")
 
+
 for n in range(6, 6 + ARDUCAM_TEST_LOOP_COUNT): 
     # Bad command codes
     cmd_cnt = tlm("ARDUCAM ARDUCAM_HK_TLM_T COMMANDCOUNT")
@@ -64,3 +65,4 @@ for n in range(6, 6 + ARDUCAM_TEST_LOOP_COUNT):
     get_arducam_hk()
     check(f"ARDUCAM ARDUCAM_HK_TLM_T COMMANDCOUNT == {cmd_cnt}")
     check(f"ARDUCAM ARDUCAM_HK_TLM_T COMMANDERRORCOUNT == {cmd_err_cnt+1}")
+

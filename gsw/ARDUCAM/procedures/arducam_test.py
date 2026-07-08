@@ -40,6 +40,7 @@ class ARDUCAM_Automated_Scenario_Test(Group):
   def teardown(self):
     safe_arducam()
 
+
 class Arducam_Test(Suite):
   def __init__(self):
       super().__init__()

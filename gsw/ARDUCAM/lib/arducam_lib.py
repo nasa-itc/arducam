@@ -65,5 +65,6 @@ def arducam_prepare_ast():
     # Confirm data
     confirm_arducam_data_loop()
 
+
 def arducam_sim_set_status(status):
     cmd(f"SIM_CMDBUS_BRIDGE ARDUCAM_SIM_SET_STATUS with STATUS {status}")
