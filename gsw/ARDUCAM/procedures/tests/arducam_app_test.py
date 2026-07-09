@@ -41,26 +41,26 @@ def run_arducam_app_test():
         arducam_cmd("ARDUCAM_DEBUG CAM_NOOP_CC")
         cmd("ARDUCAM_DEBUG CAM_RESET_COUNTERS_CC") # Note standard `cmd` as we can't reset counters and then confirm increment
         get_arducam_hk()
-        check(f"ARDUCAM_DEBUG ARDUCAM_HK_TLM_T COMMANDCOUNT == 0")
-        check(f"ARDUCAM_DEBUG ARDUCAM_HK_TLM_T COMMANDERRORCOUNT == 0")
+        check(f"ARDUCAM_DEBUG ARDUCAM_HK_TLM COMMANDCOUNT == 0")
+        check(f"ARDUCAM_DEBUG ARDUCAM_HK_TLM COMMANDERRORCOUNT == 0")
 
     ##
     ##   Invalid ground command, confirm bad lengths and codes are rejected
     ##
     for n in range(ARDUCAM_TEST_LOOP_COUNT):
         # Bad length
-        cmd_cnt = tlm("ARDUCAM_DEBUG ARDUCAM_HK_TLM_T COMMANDCOUNT")
-        cmd_err_cnt = tlm("ARDUCAM_DEBUG ARDUCAM_HK_TLM_T COMMANDERRORCOUNT")
+        cmd_cnt = tlm("ARDUCAM_DEBUG ARDUCAM_HK_TLM COMMANDCOUNT")
+        cmd_err_cnt = tlm("ARDUCAM_DEBUG ARDUCAM_HK_TLM COMMANDERRORCOUNT")
         cmd(f"ARDUCAM_DEBUG CAM_NOOP_CC with CCSDS_LENGTH {n+2}") # Note +2 due to CCSDS already being +1
         get_arducam_hk()
-        check(f"ARDUCAM_DEBUG ARDUCAM_HK_TLM_T COMMANDCOUNT == {cmd_cnt}")
-        check(f"ARDUCAM_DEBUG ARDUCAM_HK_TLM_T COMMANDERRORCOUNT == {cmd_err_cnt+1}")
+        check(f"ARDUCAM_DEBUG ARDUCAM_HK_TLM COMMANDCOUNT == {cmd_cnt}")
+        check(f"ARDUCAM_DEBUG ARDUCAM_HK_TLM COMMANDERRORCOUNT == {cmd_err_cnt+1}")
 
     for n in range(6, 6 + ARDUCAM_TEST_LOOP_COUNT): 
         # Bad command codes
-        cmd_cnt = tlm("ARDUCAM_DEBUG ARDUCAM_HK_TLM_T COMMANDCOUNT")
-        cmd_err_cnt = tlm("ARDUCAM_DEBUG ARDUCAM_HK_TLM_T COMMANDERRORCOUNT")
+        cmd_cnt = tlm("ARDUCAM_DEBUG ARDUCAM_HK_TLM COMMANDCOUNT")
+        cmd_err_cnt = tlm("ARDUCAM_DEBUG ARDUCAM_HK_TLM COMMANDERRORCOUNT")
         cmd(f"ARDUCAM_DEBUG CAM_NOOP_CC with CCSDS_FC {n+1}")
         get_arducam_hk()
-        check(f"ARDUCAM_DEBUG ARDUCAM_HK_TLM_T COMMANDCOUNT == {cmd_cnt}")
-        check(f"ARDUCAM_DEBUG ARDUCAM_HK_TLM_T COMMANDERRORCOUNT == {cmd_err_cnt+1}")
+        check(f"ARDUCAM_DEBUG ARDUCAM_HK_TLM COMMANDCOUNT == {cmd_cnt}")
+        check(f"ARDUCAM_DEBUG ARDUCAM_HK_TLM COMMANDERRORCOUNT == {cmd_err_cnt+1}")
